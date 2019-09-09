@@ -1,0 +1,15 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = crlf
+insert_final_newline = true
+
+# js、css、scss文件统一配置：charset为utf-8，使用4个空格缩进代码
+[*.{js,ts,css,scss}]
+charset = utf-8
+indent_style = space
+indent_size = 2

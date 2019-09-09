@@ -1,0 +1,19 @@
+@import '../../../theme/variable.scss';
+
+.layout {
+  height: 100vh;
+  display: flex;
+}
+
+.sider {
+  box-sizing: border-box;
+  width: 320px;
+  background-color: #fff;
+}
+
+.content {
+  flex: 1;
+  background-color: #f5f5f7;
+  border-left: 1px solid $borderColor;
+  border-right: 1px solid $borderColor;
+}

@@ -1,0 +1,95 @@
+@import '../../../theme/variable.scss';
+$borderColor: #c9c9c9;
+
+.unite-condition__wrapper {
+  display: flex;
+  font-size: 12px;
+  position: relative;
+}
+
+.unite-condition__wrapper--last {
+  &::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    background-color: #fff;
+    z-index: 9;
+    top: 13px;
+    left: -$gap - 1px;
+  }
+}
+
+.toolbar__wrapper {
+  margin-right: $gap;
+}
+
+.toolbar__container--hasChildren {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: $gap;
+    height: 1px;
+    background-color: $borderColor;
+    top: 12px; // 这个无法计算，除非写死每个item的高度
+    right: -$gap;
+  }
+}
+
+.display {
+  box-sizing: border-box;
+  display: inline-block;
+  position: relative;
+  margin-bottom: 4px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: $gap;
+    height: 1px;
+    margin: auto;
+    background-color: $borderColor;
+    top: 0;
+    bottom: 0;
+    left: -$gap - 1px;
+  }
+}
+
+.display--no-border {
+  &::before {
+    display: none;
+  }
+}
+
+.condition__container {
+  border-left: 1px solid $borderColor;
+}
+
+.condition {
+  position: relative;
+  padding: 3px $gap;
+
+  &:first-child {
+    // margin-top: -$gap / 2;
+  }
+}
+
+.cover-line {
+  position: absolute;
+  width: 2px;
+  height: 50%;
+  background-color: #fff;
+  z-index: 9;
+}
+
+.cover-line--top {
+  top: -2px;
+  left: -1px;
+}
+
+.cover-line--bottom {
+  bottom: 1px;
+  left: -1px;
+}

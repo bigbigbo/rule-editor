@@ -1,0 +1,53 @@
+@import '../../../theme/variable.scss';
+
+.layout {
+  display: flex;
+}
+
+.content {
+  flex: 1;
+  background-color: #f5f5f7;
+}
+
+.sider {
+  box-sizing: border-box;
+  width: 320px;
+  padding: $gap;
+  background-color: #fff;
+  border-left: 1px solid $borderColor;
+  border-top: 1px solid $borderColor;
+}
+
+.toolbar {
+  background-color: #fff;
+  padding: $gap--small;
+}
+
+.rule__wrapper {
+  padding: $gap--small;
+}
+
+.rule__container {
+  min-height: 120px;
+  border-radius: $borderRadious;
+  background-color: #fff;
+  box-shadow: $boxShadow;
+}
+
+.rule {
+  padding: $gap--small $gap;
+}
+
+.title {
+  padding: $gap--small $gap;
+  border-bottom: 1px solid $borderColor;
+
+  margin-bottom: $gap--small;
+}
+
+.sub-title {
+  font-weight: 700;
+  border-left: 4px solid $color--main;
+  padding: 0 $gap--small;
+  margin-bottom: $gap--small;
+}
