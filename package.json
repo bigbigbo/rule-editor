@@ -1,7 +1,8 @@
 {
-  "name": "rule-editor",
+  "name": "@linewell-components/rule-editor",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "main": "src/lib/index.js",
   "dependencies": {
     "@babel/core": "7.5.5",
     "@svgr/webpack": "4.3.2",

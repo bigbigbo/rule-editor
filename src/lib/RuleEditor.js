@@ -3,9 +3,9 @@ import { ConfigProvider } from 'antd';
 import zhCN from 'antd/es/locale/zh_CN';
 
 import Provider from './store';
-import { Layout, Sider, Content } from './components/Layout';
-import ExplorerView from './features/ExplorerView';
-import EditorView from './features/EditorView';
+import { Layout,/*  Sider, */ Content } from './components/Layout';
+// import ExplorerView from './features/ExplorerView';
+import { DecisionSetEditor } from './features/EditorView';
 
 const RuleEditor = props => {
   const { constants, variables, funcs } = props;
@@ -14,11 +14,11 @@ const RuleEditor = props => {
     <ConfigProvider locale={zhCN}>
       <Provider constants={constants} variables={variables} funcs={funcs}>
         <Layout>
-          <Sider>
+          {/* <Sider>
             <ExplorerView />
-          </Sider>
+          </Sider> */}
           <Content>
-            <EditorView />
+            <DecisionSetEditor />
           </Content>
         </Layout>
       </Provider>

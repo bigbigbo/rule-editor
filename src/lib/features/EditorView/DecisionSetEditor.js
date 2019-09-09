@@ -22,13 +22,13 @@ const DecisionSetEditor = () => {
   return (
     <div>
       <div className={styles.toolbar}>
-        <Button type="primary" ghost icon="plus">
+        {/* <Button type="primary" ghost icon="plus">
           新建规则
         </Button>
         &nbsp;&nbsp;
         <Button type="primary" ghost icon="plus-circle">
           新建循环规则
-        </Button>
+        </Button> */}
         <div style={{ float: 'right' }}>
           <Button type="primary">保存</Button>
         </div>
