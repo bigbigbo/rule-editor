@@ -2,7 +2,8 @@
   "name": "@linewell-components/rule-editor",
   "version": "0.1.0",
   "private": false,
-  "main": "src/lib/index.js",
+  "main": "dist/lib/index.js",
+  "module": "dist/es/index.js",
   "dependencies": {
     "@babel/core": "7.5.5",
     "@svgr/webpack": "4.3.2",
@@ -67,7 +68,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "compile": "rimraf dist && cross-env BABEL_ENV=production rollup -c config/rollup.config.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -85,9 +87,18 @@
     ]
   },
   "devDependencies": {
+    "autoprefixer": "^9.6.1",
     "babel-plugin-import": "^1.12.1",
+    "cross-env": "^5.2.1",
     "node-sass": "^4.12.0",
-    "prettier": "^1.18.2"
+    "prettier": "^1.18.2",
+    "rimraf": "^3.0.0",
+    "rollup": "^1.21.1",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-uglify": "^6.0.3"
   },
   "jest": {
     "roots": [
