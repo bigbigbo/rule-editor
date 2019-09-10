@@ -3,7 +3,7 @@
 > 参考 [URule](http://urule.bstek.com/index.html)
 
 ## TODO
-- [] 加载初始值
+- [x] 加载初始值
 - [] 循环规则
 - [x] 规则属性编辑
 - [] 保存校验
