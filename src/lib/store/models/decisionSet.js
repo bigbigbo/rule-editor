@@ -6,13 +6,23 @@ import { INPUT, CONSTANT, VARIABLE, FUNC } from '../../constants/valueType'
 import { VARIABLE_ASSIGN, EXECUTE_METHOD } from '../../constants/actionType'
 import { getNode, getValueType } from '../../utils/decisionSet'
 
-class Condition {
+export class Condition {
   constructor(props) {
     this.id = props.id;
     this.type = props.type;
 
     if (this.isNormalType) {
-      this.expression = props.expression || {};
+      this.expression = {};
+      if (props.expression.left) {
+        this.expression.left = new ValueType(props.expression.left)
+      }
+      if (props.expression.operator) {
+        this.expression.operator = props.expression.operator
+      }
+      if (props.expression.right) {
+        this.expression.right = new ValueType(props.expression.right)
+      }
+
     } else {
       this.subConditions = Array.isArray(props.subConditions)
         ? props.subConditions.map(options => new Condition(options))
@@ -35,7 +45,7 @@ class Condition {
   }
 }
 
-class ActionType {
+export class ActionType {
   constructor({ id, type, value }) {
     this.id = id;
     this.type = type;
@@ -49,8 +59,8 @@ class ActionType {
 
     if (this.type === VARIABLE_ASSIGN) {
       return {
-        left: new ValueType(value),
-        right: new ValueType(value)
+        left: new ValueType(value.left),
+        right: new ValueType(value.right)
       }
     }
 
@@ -61,7 +71,7 @@ class ActionType {
   }
 }
 
-class ValueType {
+export class ValueType {
   constructor({ id, type, value }) {
     this.id = id;
     this.type = type
@@ -116,7 +126,7 @@ class ValueType {
         groupCode: value.groupCode,
         groupLabel: value.groupLabel,
         propCode: value.propCode,
-        propLable: value.propLable
+        propLabel: value.propLabel
       }
     }
 
@@ -124,10 +134,32 @@ class ValueType {
       return {
         actionName: value.actionName,
         methodName: value.methodName,
-        parameters: value.parameters
+        methodLabel: value.methodLabel,
+        parameters: value.parameters.map(param => {
+          param.value = new ValueType(param.value)
+          return param
+        })
       }
     }
   }
+}
+
+// 设置初始状态
+export function setInitialValue(data) {
+  return produce(data, draft => {
+    draft.rootCondition.subConditions = draft.rootCondition.subConditions.map(condition => {
+
+      return new Condition(condition)
+    });
+
+    draft.trueActions = draft.trueActions.map(action => {
+      return new ActionType(action)
+    })
+
+    draft.falseActions = draft.falseActions.map(action => {
+      return new ActionType(action)
+    })
+  })
 }
 
 export default {
@@ -163,6 +195,22 @@ export default {
   },
   effects: {},
   reducers: {
+    // 设置初始值
+    setInitialValue(state, { payload }) {
+      const { initialValue } = payload
+
+      return { ...initialValue }
+    },
+
+    // 设置规则属性
+    setAttr(state, { payload }) {
+      const { fieldName, value } = payload;
+
+      return produce(state, draft => {
+        draft.attrs[fieldName] = value
+      })
+    },
+
     // 改变联合条件类型
     changeConditionType(state, { payload }) {
       const { id, type } = payload;
@@ -182,7 +230,8 @@ export default {
 
         // 添加条件后添加expression.left
         const expression = {
-          left: new ValueType({ id: md5('' + Date.now() + Math.random()), type: null })
+          // left: new ValueType({ id: md5('' + Date.now() + Math.random()), type: null })
+          left: { id: md5('' + Date.now() + Math.random()), type: null }
         }
         target.subConditions.push(new Condition({ id: newConditionId, type, expression: expression, ...restProps }));
       });
@@ -301,7 +350,7 @@ export default {
     // 改变动作的值
     setActionValue(state, { payload }) {
       const { id, position, valueId, valueType, value } = payload;
-      console.log('position', position)
+
       return produce(state, draft => {
         const target = draft[position].find(item => item.id === id)
 
@@ -330,7 +379,6 @@ export default {
 
         // 只有函数参数才存在继续添加值类型的情况
         if (parentId) {
-          console.log("parentId", parentId)
 
           let valueTypeModel
 

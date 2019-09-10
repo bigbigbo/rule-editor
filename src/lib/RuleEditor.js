@@ -7,12 +7,13 @@ import { Layout,/*  Sider, */ Content } from './components/Layout';
 // import ExplorerView from './features/ExplorerView';
 import { DecisionSetEditor } from './features/EditorView';
 
+import { setInitialValue } from './store/models/decisionSet'
 const RuleEditor = props => {
-  const { constants, variables, funcs } = props;
+  const { initialValue, constants, variables, funcs } = props;
 
   return (
     <ConfigProvider locale={zhCN}>
-      <Provider constants={constants} variables={variables} funcs={funcs}>
+      <Provider initialValue={setInitialValue(initialValue)} constants={constants} variables={variables} funcs={funcs}>
         <Layout>
           {/* <Sider>
             <ExplorerView />

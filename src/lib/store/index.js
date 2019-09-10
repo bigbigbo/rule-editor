@@ -4,8 +4,8 @@ import useCreateSotre from './createSotre';
 export const context = createContext(null);
 
 const Provider = props => {
-  const { constants, variables, funcs } = props;
-  const { state, dispatch } = useCreateSotre();
+  const { initialValue, constants, variables, funcs } = props;
+  const { state, dispatch } = useCreateSotre({ decisionSet: initialValue });
 
   console.groupCollapsed('storeState');
   console.log(state);

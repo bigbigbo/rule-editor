@@ -13,7 +13,7 @@ const ValueSelect = (props) => {
   // 更加不同的值类型显示不同的文本，如果是选择用户输入值时，则会出现一个输入框供用户输入
   const renderDisplayLabel = (rawdata) => {
     if (rawdata.isInputType) {
-      return "修改值类型"
+      return <span style={{ fontWeight: 500 }}>&nbsp;修改值类型</span>
     }
 
     if (rawdata.isConstantType) {

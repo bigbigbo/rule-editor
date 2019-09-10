@@ -18,8 +18,8 @@ function createReducers(reducers) {
 
 const reducer = createReducers(models.reducers);
 
-export default function useCreateStore() {
-  const [state, dispatch] = useReducer(reducer, models.state);
+export default function useCreateStore(initialState) {
+  const [state, dispatch] = useReducer(reducer, Object.assign(models.state, initialState));
 
   function enhanceDispatch(action) {
     return new Promise(resolve => {
