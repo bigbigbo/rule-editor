@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 
+import * as KEYBOARD from '../../constants/keyboard'
 const InputType = (props) => {
   const { value, onChange } = props;
   const [focus, setFocus] = useState(true)
@@ -17,7 +18,7 @@ const InputType = (props) => {
   }
 
   const handleEnter = ({ keyCode }) => {
-    if (keyCode === 13) {
+    if (keyCode === KEYBOARD.ENTER) {
       setFocus(false)
     }
   }
