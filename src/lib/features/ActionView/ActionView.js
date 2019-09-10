@@ -7,7 +7,7 @@ import { VARIABLE_ASSIGN, EXECUTE_METHOD } from '../../constants/actionType'
 
 
 const ActionView = (props) => {
-  const { dispatch, position, actions = [], variables = [], constants = [], funcs = [] } = props;
+  const { ruleId, dispatch, position, actions = [], variables = [], constants = [], funcs = [] } = props;
 
   const options = [
     {
@@ -35,6 +35,7 @@ const ActionView = (props) => {
     dispatch({
       type: 'decisionSet/addAction',
       payload: {
+        ruleId,
         position
       }
     })
@@ -44,6 +45,7 @@ const ActionView = (props) => {
     dispatch({
       type: 'decisionSet/deleteAction',
       payload: {
+        ruleId,
         id,
         position
       }
@@ -55,6 +57,7 @@ const ActionView = (props) => {
     dispatch({
       type: 'decisionSet/setActionType',
       payload: {
+        ruleId,
         id,
         type,
         position
@@ -67,6 +70,7 @@ const ActionView = (props) => {
     dispatch({
       type: 'decisionSet/setActionValue',
       payload: {
+        ruleId,
         id: parentId,
         valueId,
         position,
@@ -80,6 +84,7 @@ const ActionView = (props) => {
           dispatch({
             type: 'decisionSet/addValueTypeToAction',
             payload: {
+              ruleId,
               id: parentId,
               parentId: valueId,
               position

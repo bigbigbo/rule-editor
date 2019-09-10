@@ -147,6 +147,7 @@ export class ValueType {
 // 设置初始状态
 export function setInitialValue(data) {
   if (!data) return {}
+
   return produce(data, draft => {
     draft.rootCondition.subConditions = draft.rootCondition.subConditions.map(condition => {
 
@@ -163,6 +164,9 @@ export function setInitialValue(data) {
   })
 }
 
+const START_ACTIONS = 'startActions'
+const END_ACTIONS = 'endActions'
+
 export default {
   namespace: 'decisionSet',
   state: {
@@ -171,37 +175,52 @@ export default {
       remark: '作测试规则使用',
       enabled: true
     },
-    rootCondition: new Condition({
-      id: 'ROOT',
-      type: 'and',
-      subConditions: []
-    }),
 
-    trueActions: [
-      // {
-      //   type: 'variableAssign',
-      //   value: {
-      //     left: new ValueType(md5('' + Date.now() + Math.random()), null),
-      //     right: new ValueType(md5('' + Date.now() + Math.random()), null)
-      //   }
-      // }
+    // 规则
+    conditionRules: [
+      {
+        id: 1,
+
+        rootCondition: new Condition({
+          id: 'ROOT',
+          type: 'and',
+          subConditions: []
+        }),
+
+        // 那么动作
+        trueActions: [
+          // {
+          //   type: 'variableAssign',
+          //   value: {
+          //     left: new ValueType(md5('' + Date.now() + Math.random()), null),
+          //     right: new ValueType(md5('' + Date.now() + Math.random()), null)
+          //   }
+          // }
+        ],
+
+        // 否则动作
+        falseActions: [
+          // {
+          //   type: 'executeMethod',
+          //   value: new ValueType(md5('' + Date.now() + Math.random()), null)
+          // }
+        ]
+      }
     ],
 
-    falseActions: [
-      // {
-      //   type: 'executeMethod',
-      //   value: new ValueType(md5('' + Date.now() + Math.random()), null)
-      // }
-    ]
+    // 循环对象
+    loopTarget: new ValueType({ id: 'loopTarget', type: null }),
+
+    // 循环规则-开始前动作
+    startActions: [],
+
+    // 循环规则-结束时动作
+    endActions: [],
+
+
   },
   effects: {},
   reducers: {
-    // 设置初始值
-    setInitialValue(state, { payload }) {
-      const { initialValue } = payload
-
-      return { ...initialValue }
-    },
 
     // 设置规则属性
     setAttr(state, { payload }) {
@@ -212,11 +231,42 @@ export default {
       })
     },
 
+    // 设置循环对象
+    setLoopTarget(state, { payload }) {
+      const { valueId, value, valueType } = payload
+
+      return produce(state, draft => {
+        console.log('valueId', valueId)
+        const target = draft.loopTarget;
+
+        const valueTypeModel = getValueType([target], valueId)
+
+        valueTypeModel.type = valueType;
+        valueTypeModel.value = value;
+      })
+    },
+
+    // 当循环对象的时候添加单元判断条件
+    addUnitRule(state) {
+      return produce(state, draft => {
+        draft.conditionRules.push({
+          id: md5('' + Date.now() + Math.random()),
+          rootCondition: new Condition({
+            id: md5('' + Date.now() + Math.random()),
+            type: 'and',
+            subConditions: []
+          }),
+          trueActions: [],
+          falseActions: []
+        })
+      })
+    },
+
     // 改变联合条件类型
     changeConditionType(state, { payload }) {
       const { id, type } = payload;
-      return produce(state, drfat => {
-        const target = getNode([drfat.rootCondition], id);
+      return produce(state, draft => {
+        const target = getNode(draft.conditionRules.map(i => i.rootCondition), id);
         target.type = type;
       });
     },
@@ -227,7 +277,7 @@ export default {
       const newConditionId = md5('' + Date.now() + Math.random());
 
       return produce(state, draft => {
-        const target = getNode([draft.rootCondition], id);
+        const target = getNode(draft.conditionRules.map(i => i.rootCondition), id);
 
         // 添加条件后添加expression.left
         const expression = {
@@ -244,7 +294,7 @@ export default {
 
       return produce(state, draft => {
         if (parentId) {
-          const target = getNode([draft.rootCondition], parentId);
+          const target = getNode(draft.conditionRules.map(i => i.rootCondition), parentId);
           const deleteIndex = target.subConditions.findIndex(item => item.id === id);
 
           target.subConditions.splice(deleteIndex, 1);
@@ -257,7 +307,7 @@ export default {
       const { id, position, valueId, valueType, value } = payload;
 
       return produce(state, draft => {
-        const target = getNode([draft.rootCondition], id)
+        const target = getNode(draft.conditionRules.map(i => i.rootCondition), id)
 
         const valueTypeModel = getValueType([target.expression[position]], valueId)
 
@@ -271,7 +321,7 @@ export default {
       const { id, label, charator } = payload
 
       return produce(state, draft => {
-        const target = getNode([draft.rootCondition], id)
+        const target = getNode(draft.conditionRules.map(i => i.rootCondition), id)
         target.expression.operator = {
           label,
           charator
@@ -289,7 +339,7 @@ export default {
       const { id, parentId, position } = payload
 
       return produce(state, draft => {
-        const target = getNode([draft.rootCondition], id)
+        const target = getNode(draft.conditionRules.map(i => i.rootCondition), id)
 
         // 只有函数参数才存在继续添加值类型的情况
         if (parentId) {
@@ -305,20 +355,36 @@ export default {
 
     // 添加一个动作
     addAction(state, { payload }) {
-      const { position } = payload;
+      const { ruleId, position } = payload;
 
       return produce(state, draft => {
-        const target = draft[position];
+
+        let target;
+
+        if ([START_ACTIONS, END_ACTIONS].includes(position)) {
+          target = draft[position]
+        } else {
+          const rule = draft.conditionRules.find(i => i.id === ruleId)
+          target = rule[position];
+        }
+
         target.push(new ActionType({ id: md5('' + Date.now() + Math.random()), type: null }))
       })
     },
 
     // 删除一个动作
     deleteAction(state, { payload }) {
-      const { id, position } = payload;
+      const { ruleId, id, position } = payload;
 
       return produce(state, draft => {
-        const target = draft[position];
+        let target;
+
+        if ([START_ACTIONS, END_ACTIONS].includes(position)) {
+          target = draft[position]
+        } else {
+          const rule = draft.conditionRules.find(i => i.id === ruleId)
+          target = rule[position];
+        }
 
         const deleteIndex = target.findIndex(item => item.id === id);
 
@@ -328,10 +394,17 @@ export default {
 
     // 设置动作类型：变量赋值或者执行方法
     setActionType(state, { payload }) {
-      const { id, type, position } = payload
+      const { ruleId, id, type, position } = payload
 
       return produce(state, draft => {
-        const target = draft[position].find(item => item.id === id);
+        let target;
+
+        if ([START_ACTIONS, END_ACTIONS].includes(position)) {
+          target = draft[position].find(item => item.id === id);
+        } else {
+          const rule = draft.conditionRules.find(i => i.id === ruleId)
+          target = rule[position].find(item => item.id === id);
+        }
 
         target.type = type
 
@@ -350,10 +423,17 @@ export default {
 
     // 改变动作的值
     setActionValue(state, { payload }) {
-      const { id, position, valueId, valueType, value } = payload;
+      const { ruleId, id, position, valueId, valueType, value } = payload;
 
       return produce(state, draft => {
-        const target = draft[position].find(item => item.id === id)
+        let target;
+
+        if ([START_ACTIONS, END_ACTIONS].includes(position)) {
+          target = draft[position].find(item => item.id === id);
+        } else {
+          const rule = draft.conditionRules.find(i => i.id === ruleId)
+          target = rule[position].find(item => item.id === id);
+        }
 
         let valueTypeModel
 
@@ -373,10 +453,17 @@ export default {
 
     // 为动作的函数添加值类型
     addValueTypeToAction(state, { payload }) {
-      const { id, parentId, position } = payload
+      const { ruleId, id, parentId, position } = payload
 
       return produce(state, draft => {
-        const target = draft[position].find(item => item.id === id)
+        let target;
+
+        if ([START_ACTIONS, END_ACTIONS].includes(position)) {
+          target = draft[position].find(item => item.id === id);
+        } else {
+          const rule = draft.conditionRules.find(i => i.id === ruleId)
+          target = rule[position].find(item => item.id === id);
+        }
 
         // 只有函数参数才存在继续添加值类型的情况
         if (parentId) {
