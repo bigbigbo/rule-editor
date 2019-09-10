@@ -8,12 +8,12 @@ import { INPUT, CONSTANT, VARIABLE, FUNC } from '../../constants/valueType'
 const ValueSelect = (props) => {
   const { defaultText = '请选择值类型', dispatch, parentId, constants = [], rawOptions = [], options = [], rawdata = {}, onChange } = props;
 
-  const { id, /* type, */ value, isInputType = false, isFuncType = false } = rawdata;
+  const { id, value, isInputType = false, isFuncType = false } = rawdata;
 
   // 更加不同的值类型显示不同的文本，如果是选择用户输入值时，则会出现一个输入框供用户输入
   const renderDisplayLabel = (rawdata) => {
     if (rawdata.isInputType) {
-      return ""
+      return "修改值类型"
     }
 
     if (rawdata.isConstantType) {
@@ -103,6 +103,7 @@ const ValueSelect = (props) => {
     if (valueType === FUNC) {
       // 必须选择具体函数才能操作
       if (value.length === 2) return;
+
       const [, actionName, methodName] = value;
       const { label, parameters } = selectedOptions[selectedOptions.length - 1]
 
@@ -134,11 +135,11 @@ const ValueSelect = (props) => {
 
   return (
     <React.Fragment>
+      {isInputType && <InputType value={value} onChange={handleInputTypeValueChange} />}
+
       <Cascader changeOnSelect={true} options={options} onChange={handleChange}>
         <span style={{ color: 'blue', fontWeight: 700, cursor: 'pointer', outline: 'none' }}>{rawdata.type ? renderDisplayLabel(rawdata) : defaultText}</span>
       </Cascader>
-
-      {isInputType && <InputType value={value} onChange={handleInputTypeValueChange} />}
 
       {isFuncType && renderFuncParameters(rawdata)}
 
