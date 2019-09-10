@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import * as KEYBOARD from '../../constants/keyboard'
 const InputType = (props) => {
   const { value, onChange } = props;
-  const [focus, setFocus] = useState(true)
+  const [focus, setFocus] = useState(!value)
   const ref = useRef();
 
   useEffect(() => {
