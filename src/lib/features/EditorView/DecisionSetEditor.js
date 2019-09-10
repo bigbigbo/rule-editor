@@ -50,12 +50,20 @@ const DecisionSetEditor = () => {
                 />
 
                 <div className={styles['sub-title']} style={{ marginTop: 20 }}>那么</div>
-                <ActionView dispatch={dispatch} position={TRUE_ACTIONS} actions={trueActions} constants={constants}
+                <ActionView
+                  dispatch={dispatch}
+                  position={TRUE_ACTIONS}
+                  actions={trueActions}
+                  constants={constants}
                   variables={variables}
                   funcs={funcs}></ActionView>
 
                 <div className={styles['sub-title']} style={{ marginTop: 20 }}>否则</div>
-                <ActionView dispatch={dispatch} position={FALSE_ACTIONS} actions={falseActions} constants={constants}
+                <ActionView
+                  dispatch={dispatch}
+                  position={FALSE_ACTIONS}
+                  actions={falseActions}
+                  constants={constants}
                   variables={variables}
                   funcs={funcs}></ActionView>
 
@@ -64,7 +72,7 @@ const DecisionSetEditor = () => {
           </div>
         </div>
         <div className={styles.sider}>
-          <RulePropsView attrs={attrs}></RulePropsView>
+          <RulePropsView attrs={attrs} dispatch={dispatch}></RulePropsView>
         </div>
       </div>
     </div>

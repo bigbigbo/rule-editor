@@ -83,7 +83,6 @@ const Condition = props => {
 
   // 值类型的值改变
   const handleExpressionChange = ({ parentId, valueId, type, value }, position) => {
-    console.log('valueId', valueId)
     dispatch({
       type: 'decisionSet/setExpression',
       payload: {
