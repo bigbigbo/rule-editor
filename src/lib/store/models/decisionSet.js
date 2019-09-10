@@ -146,6 +146,7 @@ export class ValueType {
 
 // 设置初始状态
 export function setInitialValue(data) {
+  if (!data) return {}
   return produce(data, draft => {
     draft.rootCondition.subConditions = draft.rootCondition.subConditions.map(condition => {
 
