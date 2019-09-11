@@ -7,7 +7,7 @@ import { VARIABLE_ASSIGN, EXECUTE_METHOD } from '../../constants/actionType'
 import { CONDITION_RULE } from '../../constants/ruleType'
 import { getNode, getValueType } from '../../utils/decisionSet'
 
-export class Condition {
+class Condition {
   constructor(props) {
     this.id = props.id;
     this.type = props.type;
@@ -46,7 +46,7 @@ export class Condition {
   }
 }
 
-export class ActionType {
+class ActionType {
   constructor({ id, type, value }) {
     this.id = id;
     this.type = type;
@@ -72,7 +72,7 @@ export class ActionType {
   }
 }
 
-export class ValueType {
+class ValueType {
   constructor({ id, type, value }) {
     this.id = id;
     this.type = type
@@ -145,15 +145,64 @@ export class ValueType {
   }
 }
 
+const START_ACTIONS = 'startActions'
+const END_ACTIONS = 'endActions'
+
+const initialState = {
+  attrs: {
+    name: '测试规则',
+    remark: '',
+    enabled: true,
+    ruleType: CONDITION_RULE
+  },
+
+  // 规则
+  conditionRules: [
+    {
+      id: 1,
+      name: '判断单元',
+      rootCondition: new Condition({
+        id: 'ROOT',
+        type: AND,
+        subConditions: []
+      }),
+
+      // 那么动作
+      trueActions: [
+        // {
+        //   type: 'variableAssign',
+        //   value: {
+        //     left: new ValueType(md5('' + Date.now() + Math.random()), null),
+        //     right: new ValueType(md5('' + Date.now() + Math.random()), null)
+        //   }
+        // }
+      ],
+
+      // 否则动作
+      falseActions: [
+        // {
+        //   type: 'executeMethod',
+        //   value: new ValueType(md5('' + Date.now() + Math.random()), null)
+        // }
+      ]
+    }
+  ],
+
+  // 循环对象
+  loopTarget: new ValueType({ id: 'loopTarget', type: null }),
+
+  // 循环规则-开始前动作
+  startActions: [],
+
+  // 循环规则-结束时动作
+  endActions: [],
+}
+
 // 设置初始状态
 export function setInitialValue(data) {
-  if (!data) return {}
+  if (!data) return initialState
 
   return produce(data, draft => {
-    // draft.rootCondition.subConditions = draft.rootCondition.subConditions.map(condition => {
-
-    //   return new Condition(condition)
-    // });
 
     draft.conditionRules.forEach(rule => {
 
@@ -169,8 +218,6 @@ export function setInitialValue(data) {
     })
 
     draft.startActions = draft.startActions.map(action => {
-      console.log('en')
-
       return new ActionType(action)
     })
 
@@ -180,61 +227,9 @@ export function setInitialValue(data) {
   })
 }
 
-const START_ACTIONS = 'startActions'
-const END_ACTIONS = 'endActions'
-
 export default {
   namespace: 'decisionSet',
-  state: {
-    attrs: {
-      name: '测试规则1',
-      remark: '作测试规则使用',
-      enabled: true
-    },
-
-    // 规则
-    conditionRules: [
-      {
-        id: 1,
-        name: '默认判断单元',
-        rootCondition: new Condition({
-          id: 'ROOT',
-          type: AND,
-          subConditions: []
-        }),
-
-        // 那么动作
-        trueActions: [
-          // {
-          //   type: 'variableAssign',
-          //   value: {
-          //     left: new ValueType(md5('' + Date.now() + Math.random()), null),
-          //     right: new ValueType(md5('' + Date.now() + Math.random()), null)
-          //   }
-          // }
-        ],
-
-        // 否则动作
-        falseActions: [
-          // {
-          //   type: 'executeMethod',
-          //   value: new ValueType(md5('' + Date.now() + Math.random()), null)
-          // }
-        ]
-      }
-    ],
-
-    // 循环对象
-    loopTarget: new ValueType({ id: 'loopTarget', type: null }),
-
-    // 循环规则-开始前动作
-    startActions: [],
-
-    // 循环规则-结束时动作
-    endActions: [],
-
-
-  },
+  state: initialState,
   effects: {},
   reducers: {
 
