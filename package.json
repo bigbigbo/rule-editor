@@ -4,6 +4,9 @@
   "private": false,
   "main": "dist/lib/index.js",
   "module": "dist/es/index.js",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@babel/core": "7.5.5",
     "@svgr/webpack": "4.3.2",
