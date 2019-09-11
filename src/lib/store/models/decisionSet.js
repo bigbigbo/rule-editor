@@ -183,7 +183,7 @@ export default {
 
         rootCondition: new Condition({
           id: 'ROOT',
-          type: 'and',
+          type: AND,
           subConditions: []
         }),
 
@@ -253,7 +253,7 @@ export default {
           id: md5('' + Date.now() + Math.random()),
           rootCondition: new Condition({
             id: md5('' + Date.now() + Math.random()),
-            type: 'and',
+            type: AND,
             subConditions: []
           }),
           trueActions: [],
