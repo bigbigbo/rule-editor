@@ -104,7 +104,7 @@ const DecisionSetEditor = () => {
                     const loopStyle = {
                       padding: 8,
                       margin: 8,
-                      borderRadious: 4,
+                      borderRadius: 4,
                       border: '1px dashed #c9c9c9',
                     }
                     return <React.Fragment key={id}>

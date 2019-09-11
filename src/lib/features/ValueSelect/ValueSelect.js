@@ -74,7 +74,6 @@ const ValueSelect = (props) => {
           label
         }
       }
-
     }
 
     if (valueType === VARIABLE) {
@@ -82,9 +81,10 @@ const ValueSelect = (props) => {
       const [dicts] = constants.filter(i => i.value === dictType); // 变量要带上字典给后端
 
       if (value.length === 2) {
+        console.log('value', value)
         standardValue = {
           dicts,
-          groupCode: value[value.length - 1],
+          groupCode: [value[value.length - 1]],
           groupLabel: selectedOptions[selectedOptions.length - 1].label,
           propCode: "",
           propLabel: ""
