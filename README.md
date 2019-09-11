@@ -12,3 +12,10 @@
 - [x] 初始值更改
 - [ ] 接口联调
 - [ ] 保存校验
+
+## Example
+```sh
+npm install # 安装
+
+npm start # 启动
+```
