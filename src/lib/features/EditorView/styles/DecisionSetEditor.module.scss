@@ -25,12 +25,13 @@
 }
 
 .rule__wrapper {
-  padding: $gap--small;
+  // padding: $gap--small;
+  margin-right: $gap--small;
 }
 
 .rule__container {
   min-height: 120px;
-  border-radius: $borderRadious;
+  // border-radius: $borderRadious;
   background-color: #fff;
   box-shadow: $boxShadow;
 }

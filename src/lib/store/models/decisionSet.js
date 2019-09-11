@@ -4,6 +4,7 @@ import md5 from 'md5';
 import { AND, OR, NORMAL } from '../../constants/conditionType';
 import { INPUT, CONSTANT, VARIABLE, FUNC } from '../../constants/valueType'
 import { VARIABLE_ASSIGN, EXECUTE_METHOD } from '../../constants/actionType'
+import { CONDITION_RULE } from '../../constants/ruleType'
 import { getNode, getValueType } from '../../utils/decisionSet'
 
 export class Condition {
@@ -180,7 +181,7 @@ export default {
     conditionRules: [
       {
         id: 1,
-
+        name: '默认判断单元',
         rootCondition: new Condition({
           id: 'ROOT',
           type: AND,
@@ -228,6 +229,10 @@ export default {
 
       return produce(state, draft => {
         draft.attrs[fieldName] = value
+
+        if (fieldName === 'ruleType' && value === CONDITION_RULE) {
+          draft.conditionRules = draft.conditionRules.slice(0, 1)
+        }
       })
     },
 
@@ -246,6 +251,8 @@ export default {
       })
     },
 
+
+
     // 当循环对象的时候添加单元判断条件
     addUnitRule(state) {
       return produce(state, draft => {
@@ -259,6 +266,26 @@ export default {
           trueActions: [],
           falseActions: []
         })
+      })
+    },
+
+    // 改变循环对象中单元判断的名称
+    setUnitRuleName(state, { payload }) {
+      const { id, name } = payload;
+
+      return produce(state, draft => {
+        const target = draft.conditionRules.find(i => i.id === id);
+        target.name = name;
+      })
+    },
+
+    deleteUnitRule(state, { payload }) {
+      const { id } = payload
+
+      return produce(state, draft => {
+        const deleteIndex = draft.conditionRules.findIndex(i => i.id === id)
+
+        draft.conditionRules.splice(deleteIndex, 1);
       })
     },
 

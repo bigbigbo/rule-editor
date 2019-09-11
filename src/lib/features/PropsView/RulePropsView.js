@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Switch } from 'antd';
+import { Form, Input, Switch, Button } from 'antd';
 
 import { CONDITION_RULE, LOOP_RULE } from '../../constants/ruleType'
 
@@ -16,7 +16,6 @@ const formItemLayout = {
 
 const RulePropsView = props => {
   const { attrs = {}, dispatch } = props;
-
 
   const handleFieldValueChange = (fieldName, value) => {
     dispatch({
@@ -38,6 +37,7 @@ const RulePropsView = props => {
           <Switch checked={attrs.ruleType === LOOP_RULE} onChange={(e) => handleFieldValueChange('ruleType', e ? LOOP_RULE : CONDITION_RULE)} />
         </Form.Item>
       </Form>
+      <Button type="primary" size="large" style={{ width: '100%' }}>保存</Button>
     </React.Fragment>
   );
 };
