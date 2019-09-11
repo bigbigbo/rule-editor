@@ -5,6 +5,7 @@ import { AND, OR, NORMAL } from '../../constants/conditionType';
 import { INPUT, CONSTANT, VARIABLE, FUNC } from '../../constants/valueType'
 import { VARIABLE_ASSIGN, EXECUTE_METHOD } from '../../constants/actionType'
 import { CONDITION_RULE } from '../../constants/ruleType'
+import { IS_PUBLIC_RULE } from '../../constants/rulePublic'
 import { getNode, getValueType } from '../../utils/decisionSet'
 
 class Condition {
@@ -153,7 +154,8 @@ const initialState = {
     name: '测试规则',
     remark: '',
     enabled: true,
-    ruleType: CONDITION_RULE
+    ruleType: CONDITION_RULE,
+    ruleIsPublic: IS_PUBLIC_RULE
   },
 
   // 规则
@@ -206,7 +208,7 @@ export function setInitialValue(data) {
 
     draft.conditionRules.forEach(rule => {
 
-      rule.rootCondition.subConditions = rule.rootCondition.subConditions.map(condition => new Condition(condition))
+      rule.rootCondition = new Condition(rule.rootCondition)
 
       rule.trueActions = rule.trueActions.map(action => {
         return new ActionType(action)
@@ -216,6 +218,8 @@ export function setInitialValue(data) {
         return new ActionType(action)
       })
     })
+
+    draft.loopTarget = new ValueType(draft.loopTarget)
 
     draft.startActions = draft.startActions.map(action => {
       return new ActionType(action)
@@ -251,7 +255,6 @@ export default {
       const { valueId, value, valueType } = payload
 
       return produce(state, draft => {
-        console.log('valueId', valueId)
         const target = draft.loopTarget;
 
         const valueTypeModel = getValueType([target], valueId)
@@ -289,6 +292,7 @@ export default {
       })
     },
 
+    // 删除判断单元
     deleteUnitRule(state, { payload }) {
       const { id } = payload
 
@@ -302,8 +306,10 @@ export default {
     // 改变联合条件类型
     changeConditionType(state, { payload }) {
       const { id, type } = payload;
+
       return produce(state, draft => {
         const target = getNode(draft.conditionRules.map(i => i.rootCondition), id);
+        console.log('type', target.id, target.type)
         target.type = type;
       });
     },
