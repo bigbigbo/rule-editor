@@ -20,7 +20,7 @@ const START_ACTIONS = 'startActions'
 const END_ACTIONS = 'endActions';
 
 const DecisionSetEditor = (props) => {
-  const { onChange, onSubmit } = props;
+  const { saveLoading = false, onChange, onSubmit } = props;
   const { constants, variables, funcs } = useConfig();
   const { decisionSet, dispatch } = useConnect(state => ({ decisionSet: state.decisionSet }));
 
@@ -201,7 +201,7 @@ const DecisionSetEditor = (props) => {
       </div>
 
       <div className={styles.sider}>
-        <RulePropsView attrs={attrs} dispatch={dispatch} onSubmit={handleSubmit}></RulePropsView>
+        <RulePropsView saveLoading={saveLoading} attrs={attrs} dispatch={dispatch} onSubmit={handleSubmit}></RulePropsView>
       </div>
     </div>
   );

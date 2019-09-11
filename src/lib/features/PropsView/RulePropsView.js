@@ -16,7 +16,7 @@ const formItemLayout = {
 };
 
 const RulePropsView = props => {
-  const { attrs = {}, dispatch, onSubmit } = props;
+  const { saveLoading = false, attrs = {}, dispatch, onSubmit } = props;
 
   const handleFieldValueChange = (fieldName, value) => {
     dispatch({
@@ -41,7 +41,7 @@ const RulePropsView = props => {
           <Switch checked={attrs.ruleType === LOOP_RULE} onChange={(e) => handleFieldValueChange('ruleType', e ? LOOP_RULE : CONDITION_RULE)} />
         </Form.Item>
       </Form>
-      <Button type="primary" size="large" style={{ width: '100%' }} onClick={onSubmit}>保存</Button>
+      <Button type="primary" size="large" style={{ width: '100%' }} onClick={onSubmit} loading={saveLoading}>{saveLoading ? '保存中' : '保存'}</Button>
     </React.Fragment>
   );
 };
