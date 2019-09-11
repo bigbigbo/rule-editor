@@ -150,16 +150,31 @@ export function setInitialValue(data) {
   if (!data) return {}
 
   return produce(data, draft => {
-    draft.rootCondition.subConditions = draft.rootCondition.subConditions.map(condition => {
+    // draft.rootCondition.subConditions = draft.rootCondition.subConditions.map(condition => {
 
-      return new Condition(condition)
-    });
+    //   return new Condition(condition)
+    // });
 
-    draft.trueActions = draft.trueActions.map(action => {
+    draft.conditionRules.forEach(rule => {
+
+      rule.rootCondition.subConditions = rule.rootCondition.subConditions.map(condition => new Condition(condition))
+
+      rule.trueActions = rule.trueActions.map(action => {
+        return new ActionType(action)
+      })
+
+      rule.falseActions = rule.falseActions.map(action => {
+        return new ActionType(action)
+      })
+    })
+
+    draft.startActions = draft.startActions.map(action => {
+      console.log('en')
+
       return new ActionType(action)
     })
 
-    draft.falseActions = draft.falseActions.map(action => {
+    draft.endActions = draft.endActions.map(action => {
       return new ActionType(action)
     })
   })
