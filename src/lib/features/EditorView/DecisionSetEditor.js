@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Input, Button } from 'antd';
 
 import ValueSelect from '../ValueSelect'
@@ -19,7 +19,8 @@ const FALSE_ACTIONS = 'falseActions'
 const START_ACTIONS = 'startActions'
 const END_ACTIONS = 'endActions';
 
-const DecisionSetEditor = () => {
+const DecisionSetEditor = (props) => {
+  const { onChange, onSubmit } = props;
   const { constants, variables, funcs } = useConfig();
   const { decisionSet, dispatch } = useConnect(state => ({ decisionSet: state.decisionSet }));
 
@@ -90,6 +91,15 @@ const DecisionSetEditor = () => {
       }
     })
   }
+
+  // 保存
+  const handleSubmit = () => {
+    onSubmit && onSubmit(decisionSet)
+  }
+
+  useEffect(() => {
+    onChange && onChange(decisionSet)
+  }, [decisionSet])
 
   return (
     <div className={styles.layout}>
@@ -191,7 +201,7 @@ const DecisionSetEditor = () => {
       </div>
 
       <div className={styles.sider}>
-        <RulePropsView attrs={attrs} dispatch={dispatch}></RulePropsView>
+        <RulePropsView attrs={attrs} dispatch={dispatch} onSubmit={handleSubmit}></RulePropsView>
       </div>
     </div>
   );

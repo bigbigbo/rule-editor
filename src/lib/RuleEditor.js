@@ -9,7 +9,7 @@ import { DecisionSetEditor } from './features/EditorView';
 
 import { setInitialValue } from './store/models/decisionSet'
 const RuleEditor = props => {
-  const { initialValue, constants, variables, funcs } = props;
+  const { initialValue, constants, variables, funcs, onChange, onSubmit } = props;
 
   return (
     <ConfigProvider locale={zhCN}>
@@ -19,7 +19,7 @@ const RuleEditor = props => {
             <ExplorerView />
           </Sider> */}
           <Content>
-            <DecisionSetEditor />
+            <DecisionSetEditor onChange={onChange} onSubmit={onSubmit} />
           </Content>
         </Layout>
       </Provider>
