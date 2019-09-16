@@ -1,6 +1,6 @@
 {
   "name": "@linewell-components/rule-editor",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": false,
   "main": "dist/lib/index.js",
   "module": "dist/es/index.js",
