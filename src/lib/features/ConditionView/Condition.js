@@ -45,7 +45,7 @@ const Condition = props => {
     }
   ]
 
-  const rightOptions = (left.value && left.value.dicts) ? [{ label: '选择常量', value: CONSTANT, children: [left.value.dicts] }] : options
+  const rightOptions = (left.value && left.value.type === VARIABLE && left.value.dicts) ? [{ label: '选择常量', value: CONSTANT, children: [left.value.dicts] }] : options
 
   const handleChangeOperator = ({ label, charator }) => {
     dispatch({
