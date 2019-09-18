@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Input, Button } from 'antd';
+import { Input, Button, Modal } from 'antd';
 
 import ValueSelect from '../ValueSelect'
 import ConditionView from '../ConditionView';
@@ -94,6 +94,59 @@ const DecisionSetEditor = (props) => {
 
   // 保存
   const handleSubmit = () => {
+    console.log('decisionSet', decisionSet)
+    const { attrs, loopTarget, conditionRules } = decisionSet
+
+    if (!attrs.name) {
+      Modal.warning({
+        title: '请输入规则名称',
+        content: '规则名称不能为空',
+      });
+      return
+    }
+
+    if (attrs.ruleType === LOOP_RULE) {
+
+      if (!loopTarget.type) {
+        Modal.warning({
+          title: '请设置循环对象',
+          content: '循环对象不能为空',
+        });
+        return
+      }
+
+      if (!loopTarget.value || Object.keys(loopTarget.value).length === 0) {
+        Modal.warning({
+          title: '请设置循环对象的值类型',
+          content: '循环对象的值类型不能为空',
+        });
+        return
+      }
+
+    }
+
+
+    for (let i = 0; i < conditionRules.length; i++) {
+      const condition = conditionRules[i];
+      const { trueActions, falseActions, rootCondition } = condition;
+
+      if (rootCondition.subConditions.length === 0) {
+        Modal.warning({
+          title: '请添加至少一个条件',
+          content: '【如果】条件不能为空',
+        });
+        return
+      }
+
+      if (trueActions.length === 0 && falseActions.length === 0) {
+        Modal.warning({
+          title: '请为【那么】【否则】添加至少一个动作',
+          content: '【那么】【否则】不能全为空',
+        });
+        return
+      }
+    }
+
     onSubmit && onSubmit(decisionSet)
   }
 
@@ -106,7 +159,7 @@ const DecisionSetEditor = (props) => {
       <div className={styles.content}>
         <div className={styles.rule__wrapper}>
           <div className={styles.rule__container}>
-            <h2 className={styles.title}>{attrs.name}</h2>
+            <h2 className={styles.title} style={{ color: attrs.name ? 'rgba(0, 0, 0, 0.85)' : '#c9c9c9' }}>{attrs.name || '请输入规则名称'}</h2>
             <div className={styles.rule}>
               {isLoopRule && <React.Fragment>
                 <div className={styles['sub-title']} style={{ borderColor: 'green' }} >循环对象</div>

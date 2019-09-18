@@ -151,7 +151,7 @@ const END_ACTIONS = 'endActions'
 
 const initialState = {
   attrs: {
-    name: '测试规则',
+    name: '',
     remark: '',
     enabled: true,
     ruleType: CONDITION_RULE,
