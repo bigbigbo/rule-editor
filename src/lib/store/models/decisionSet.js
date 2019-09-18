@@ -309,7 +309,6 @@ export default {
 
       return produce(state, draft => {
         const target = getNode(draft.conditionRules.map(i => i.rootCondition), id);
-        console.log('type', target.id, target.type)
         target.type = type;
       });
     },

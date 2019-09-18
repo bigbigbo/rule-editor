@@ -9,7 +9,7 @@ const Provider = props => {
 
   console.groupCollapsed('storeState');
   console.log(state);
-  console.log(JSON.stringify(state));
+  // console.log(JSON.stringify(state));
   console.groupEnd();
 
   return <context.Provider value={{ state, dispatch, constants, variables, funcs }}>{props.children}</context.Provider>;

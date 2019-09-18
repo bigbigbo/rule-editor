@@ -111,7 +111,7 @@ const Condition = props => {
   return (
     <div className={styles.display}>
 
-      {left.id && <ValueSelect parentId={id} dispatch={dispatch} rawdata={left} options={options.slice(1, 3)} constants={constants} onChange={(value) => handleExpressionChange(value, LEFT)} />}
+      {left.id && <ValueSelect parentId={id} dispatch={dispatch} rawdata={left} options={options} constants={constants} onChange={(value) => handleExpressionChange(value, LEFT)} />}
 
       {left.type && <Dropdown overlay={operatorMenu} trigger={['click']}>
         <span style={{ color: 'red', fontWeight: 700, cursor: 'pointer', outline: 'none' }}>&nbsp;{operator ? operator.label : '请选择操作符'}&nbsp;</span>
