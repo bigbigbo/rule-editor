@@ -28,6 +28,7 @@ const RulePropsView = props => {
     })
   }
 
+
   return (
     <React.Fragment>
       <Form {...formItemLayout}>

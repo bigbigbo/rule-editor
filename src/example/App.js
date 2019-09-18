@@ -79,7 +79,8 @@ const initialValue = {
     "name": "测试规则1",
     "remark": "作测试规则使用",
     "enabled": true,
-    "ruleType": "loopRule"
+    "ruleType": "loopRule",
+    "ruleIsPublic": 2,
   },
   conditionRules: [
     {

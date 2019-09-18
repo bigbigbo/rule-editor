@@ -5,7 +5,7 @@ import { AND, OR, NORMAL } from '../../constants/conditionType';
 import { INPUT, CONSTANT, VARIABLE, FUNC } from '../../constants/valueType'
 import { VARIABLE_ASSIGN, EXECUTE_METHOD } from '../../constants/actionType'
 import { CONDITION_RULE } from '../../constants/ruleType'
-import { IS_PUBLIC_RULE } from '../../constants/rulePublic'
+import { NO_PUBLIC_RULE } from '../../constants/rulePublic'
 import { getNode, getValueType } from '../../utils/decisionSet'
 
 class Condition {
@@ -155,7 +155,7 @@ const initialState = {
     remark: '',
     enabled: true,
     ruleType: CONDITION_RULE,
-    ruleIsPublic: IS_PUBLIC_RULE
+    ruleIsPublic: NO_PUBLIC_RULE,
   },
 
   // 规则
