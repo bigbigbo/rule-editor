@@ -111,13 +111,13 @@ const Condition = props => {
   return (
     <div className={styles.display}>
 
-      {left.id && <ValueSelect parentId={id} dispatch={dispatch} rawdata={left} options={options} constants={constants} onChange={(value) => handleExpressionChange(value, LEFT)} />}
+      {left.id && <ValueSelect parentId={id} dispatch={dispatch} rawOptions={options} rawdata={left} options={options} constants={constants} onChange={(value) => handleExpressionChange(value, LEFT)} />}
 
       {left.type && <Dropdown overlay={operatorMenu} trigger={['click']}>
         <span style={{ color: 'red', fontWeight: 700, cursor: 'pointer', outline: 'none' }}>&nbsp;{operator ? operator.label : '请选择操作符'}&nbsp;</span>
       </Dropdown>}
 
-      {right.id && <ValueSelect rawOptions={options} parentId={id} dispatch={dispatch} rawdata={right} options={rightOptions} constants={constants} onChange={(value) => handleExpressionChange(value, RIGHT)} />}
+      {right.id && <ValueSelect parentId={id} rawOptions={options} dispatch={dispatch} rawdata={right} options={rightOptions} constants={constants} onChange={(value) => handleExpressionChange(value, RIGHT)} />}
 
       {operator && [OPERATE_CHATORATOR.in, OPERATE_CHATORATOR.NotIn].includes(operator.charator) && <span style={{ color: 'red', fontWeight: 700 }}>&nbsp;之中</span>}
 
