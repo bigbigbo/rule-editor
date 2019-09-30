@@ -14,7 +14,7 @@ const LEFT = 'left'
 const RIGHT = 'right'
 
 const Condition = props => {
-  const { id, parentId, onDelete, dispatch, constants, variables, funcs, rootCondition } = props;
+  const { disabled = false, id, parentId, onDelete, dispatch, constants, variables, funcs, rootCondition } = props;
 
   const currValue = useMemo(() => {
     return getNode([rootCondition], id)
@@ -111,19 +111,19 @@ const Condition = props => {
   return (
     <div className={styles.display}>
 
-      {left.id && <ValueSelect parentId={id} dispatch={dispatch} rawOptions={options} rawdata={left} options={options} constants={constants} onChange={(value) => handleExpressionChange(value, LEFT)} />}
+      {left.id && <ValueSelect disabled={disabled} parentId={id} dispatch={dispatch} rawOptions={options} rawdata={left} options={options} constants={constants} onChange={(value) => handleExpressionChange(value, LEFT)} />}
 
-      {left.type && <Dropdown overlay={operatorMenu} trigger={['click']}>
+      {left.type && <Dropdown disabled={disabled} overlay={operatorMenu} trigger={['click']}>
         <span style={{ color: 'red', fontWeight: 700, cursor: 'pointer', outline: 'none' }}>&nbsp;{operator ? operator.label : '请选择操作符'}&nbsp;</span>
       </Dropdown>}
 
-      {right.id && <ValueSelect parentId={id} rawOptions={options} dispatch={dispatch} rawdata={right} options={rightOptions} constants={constants} onChange={(value) => handleExpressionChange(value, RIGHT)} />}
+      {right.id && <ValueSelect disabled={disabled} parentId={id} rawOptions={options} dispatch={dispatch} rawdata={right} options={rightOptions} constants={constants} onChange={(value) => handleExpressionChange(value, RIGHT)} />}
 
       {operator && [OPERATE_CHATORATOR.in, OPERATE_CHATORATOR.NotIn].includes(operator.charator) && <span style={{ color: 'red', fontWeight: 700 }}>&nbsp;之中</span>}
 
-      <Popconfirm title="确定删除当前条件？" onConfirm={() => onDelete(id, parentId)}>
+      {!disabled && <Popconfirm title="确定删除当前条件？" onConfirm={() => onDelete(id, parentId)}>
         <span style={{ color: '#1890ff', cursor: 'pointer' }}>&nbsp;删&nbsp;除</span>
-      </Popconfirm>
+      </Popconfirm>}
     </div>
   );
 };

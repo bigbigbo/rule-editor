@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 
 import * as KEYBOARD from '../../constants/keyboard'
 const InputType = (props) => {
-  const { value, onChange } = props;
+  const { disabled = false, value, onChange } = props;
   const [focus, setFocus] = useState(!value)
   const ref = useRef();
 
@@ -14,6 +14,7 @@ const InputType = (props) => {
 
 
   const handleFocus = (status) => {
+    if (disabled) return 
     setFocus(status)
   }
 
@@ -24,7 +25,7 @@ const InputType = (props) => {
   }
 
   return focus ?
-    <input ref={ref} type="text" value={value} onChange={onChange} onBlur={() => handleFocus(false)}
+    <input disabled={disabled} ref={ref} type="text" value={value} onChange={onChange} onBlur={() => handleFocus(false)}
       style={{ height: 18, width: 100, outline: 'none', border: '1px solid #c9c9c9' }} onKeyDown={handleEnter} />
     :
     <span onClick={() => handleFocus(true)} style={{ color: '#b45f04' }}>{value || '请输入值'}</span>

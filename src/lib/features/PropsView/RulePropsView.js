@@ -16,9 +16,10 @@ const formItemLayout = {
 };
 
 const RulePropsView = props => {
-  const { saveLoading = false, attrs = {}, dispatch, onSubmit } = props;
+  const { disabled = false, saveLoading = false, attrs = {}, dispatch, onSubmit } = props;
 
   const [nameFieldError, setNameFieldError] = useState();
+  const [fieldDirtyMap, setFieldDirtyMap] = useState({})
 
   const handleFieldValueChange = (fieldName, value) => {
 
@@ -41,6 +42,11 @@ const RulePropsView = props => {
         value
       }
     })
+
+    setFieldDirtyMap({
+      ...fieldDirtyMap,
+      [fieldName]: true
+    })
   }
 
   const handleSubmit = () => {
@@ -53,22 +59,22 @@ const RulePropsView = props => {
 
   return (
     <React.Fragment>
-      <Form {...formItemLayout}>
-        <Form.Item label="规则名称" required hasFeedback validateStatus={nameFieldError ? 'error' : "success"} help={nameFieldError}>
-          <Input maxLength={24} placeholder="请输入规则名称" value={attrs.name} onChange={(e) => handleFieldValueChange('name', e.target.value)} />
+      <Form {...formItemLayout} >
+        <Form.Item label="规则名称" required hasFeedback validateStatus={!fieldDirtyMap.name ? undefined : (nameFieldError ? 'error' : "success")} help={nameFieldError}>
+          <Input disabled={disabled} maxLength={24} placeholder="请输入规则名称" value={attrs.name} onChange={(e) => handleFieldValueChange('name', e.target.value)} />
         </Form.Item>
         <Form.Item label="备注">
-          <Input.TextArea rows={5} maxLength={140} placeholder="请输入备注" value={attrs.remark} onChange={(e) => handleFieldValueChange('remark', e.target.value)} />
+          <Input.TextArea disabled={disabled} rows={5} maxLength={140} placeholder="请输入备注" value={attrs.remark} onChange={(e) => handleFieldValueChange('remark', e.target.value)} />
           <p style={{ textAlign: 'right', lineHeight: '24px', margin: 0 }}>{attrs.remark.length}/140</p>
         </Form.Item>
         <Form.Item label="是否公共规则">
           <Switch disabled checked={attrs.ruleIsPublic === IS_PUBLIC_RULE} onChange={(e) => handleFieldValueChange('ruleIsPublic', e ? IS_PUBLIC_RULE : NO_PUBLIC_RULE)} />
         </Form.Item>
         <Form.Item label="是否循环规则">
-          <Switch checked={attrs.ruleType === LOOP_RULE} onChange={(e) => handleFieldValueChange('ruleType', e ? LOOP_RULE : CONDITION_RULE)} />
+          <Switch disabled={disabled} checked={attrs.ruleType === LOOP_RULE} onChange={(e) => handleFieldValueChange('ruleType', e ? LOOP_RULE : CONDITION_RULE)} />
         </Form.Item>
       </Form>
-      <Button type="primary" size="large" style={{ width: '100%' }} onClick={handleSubmit} loading={saveLoading}>{saveLoading ? '保存中' : '保存'}</Button>
+      {!disabled && <Button type="primary" size="large" style={{ width: '100%' }} onClick={handleSubmit} loading={saveLoading}>{saveLoading ? '保存中' : '保存'}</Button>}
     </React.Fragment>
   );
 };

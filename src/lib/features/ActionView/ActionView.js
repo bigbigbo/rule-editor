@@ -7,7 +7,7 @@ import { VARIABLE_ASSIGN, EXECUTE_METHOD } from '../../constants/actionType'
 
 
 const ActionView = (props) => {
-  const { ruleId, dispatch, position, actions = [], variables = [], constants = [], funcs = [] } = props;
+  const { disabled = false, ruleId, dispatch, position, actions = [], variables = [], constants = [], funcs = [] } = props;
 
   const options = [
     {
@@ -108,14 +108,14 @@ const ActionView = (props) => {
     if (actionType === VARIABLE_ASSIGN) {
       const { left, right } = actionValueRawdata
       return <React.Fragment>
-        <ValueSelect parentId={parentId} dispatch={dispatch} rawdata={left} rawOptions={options} options={options.slice(1, 2)} constants={constants} onChange={(value) => handleActionValueChange(value, position)} />
+        <ValueSelect disabled={disabled} parentId={parentId} dispatch={dispatch} rawdata={left} rawOptions={options} options={options.slice(1, 2)} constants={constants} onChange={(value) => handleActionValueChange(value, position)} />
         <span style={{ color: 'red' }}>&nbsp;=&nbsp;</span>
-        <ValueSelect parentId={parentId} dispatch={dispatch} rawdata={right} rawOptions={options} options={options} constants={constants} onChange={(value) => handleActionValueChange(value, position)} />
+        <ValueSelect disabled={disabled} parentId={parentId} dispatch={dispatch} rawdata={right} rawOptions={options} options={options} constants={constants} onChange={(value) => handleActionValueChange(value, position)} />
       </React.Fragment>
     }
 
     if (actionType === EXECUTE_METHOD) {
-      return <ValueSelect defaultText="请选择方法" parentId={parentId} dispatch={dispatch} rawdata={actionValueRawdata} rawOptions={options} options={options.slice(3)} constants={constants} onChange={(value) => handleActionValueChange(value, position)} />
+      return <ValueSelect disabled={disabled} defaultText="请选择方法" parentId={parentId} dispatch={dispatch} rawdata={actionValueRawdata} rawOptions={options} options={options.slice(3)} constants={constants} onChange={(value) => handleActionValueChange(value, position)} />
     }
   }
 
@@ -134,22 +134,22 @@ const ActionView = (props) => {
           </Menu>
 
           return <div key={id}>
-            <Dropdown overlay={actionTypeMenu} trigger={['click']}>
+            <Dropdown disabled={disabled} overlay={actionTypeMenu} trigger={['click']}>
               <span style={{ color: 'green', cursor: 'pointer', outline: 'none' }}>{renderActionTypeLabel(type)}</span>
             </Dropdown>
 
             {renderActionValue({ parentId: id, actionType: type, actionValueRawdata: value })}
 
-            <Popconfirm title="确定删除当前动作？" onConfirm={() => handleDelete(id, position)}>
+            {!disabled && <Popconfirm title="确定删除当前动作？" onConfirm={() => handleDelete(id, position)}>
               <span style={{ color: '#1890ff', cursor: 'pointer' }}>&nbsp;删&nbsp;除</span>
-            </Popconfirm>
+            </Popconfirm>}
           </div>
         })
       }
 
-      <div>
+      {!disabled && <div>
         <a onClick={() => handleAddAction(position)}>添加动作</a>
-      </div>
+      </div>}
     </div>
   );
 };

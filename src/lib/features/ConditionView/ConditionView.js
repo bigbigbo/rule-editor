@@ -4,7 +4,7 @@ import UniteCondition from './UniteCondition'
 import Condition from './Condition'
 
 const ConditionView = (props) => {
-  const { rootCondition = {}, dispatch, constants = [], variables = [], funcs = [] } = props;
+  const { disabled = false, rootCondition = {}, dispatch, constants = [], variables = [], funcs = [] } = props;
 
   const handleChanageConditionType = (id, type) => {
     dispatch({
@@ -60,6 +60,7 @@ const ConditionView = (props) => {
         return <Condition
           key={id}
           id={id}
+          disabled={disabled}
           parentId={parentId}
           rootCondition={rootCondition}
           constants={constants}
@@ -74,6 +75,7 @@ const ConditionView = (props) => {
         <UniteCondition
           key={id}
           id={id}
+          disabled={disabled}
           parentId={parentId}
           isAndType={isAndType}
           onChanageConditionType={handleChanageConditionType}
@@ -90,6 +92,7 @@ const ConditionView = (props) => {
     <UniteCondition
       id={rootCondition.id}
       isRoot={true}
+      disabled={disabled}
       isAndType={rootCondition.isAndType}
       onChanageConditionType={handleChanageConditionType}
       onAddCondition={handleAddCondition}

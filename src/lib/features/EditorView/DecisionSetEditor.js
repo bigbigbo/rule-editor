@@ -20,7 +20,7 @@ const START_ACTIONS = 'startActions'
 const END_ACTIONS = 'endActions';
 
 const DecisionSetEditor = (props) => {
-  const { saveLoading = false, onChange, onSubmit } = props;
+  const { disabled = false, saveLoading = false, onChange, onSubmit } = props;
   const { constants, variables, funcs } = useConfig();
   const { decisionSet, dispatch } = useConnect(state => ({ decisionSet: state.decisionSet }));
 
@@ -163,12 +163,13 @@ const DecisionSetEditor = (props) => {
             <div className={styles.rule}>
               {isLoopRule && <React.Fragment>
                 <div className={styles['sub-title']} style={{ borderColor: 'green' }} >循环对象</div>
-                <ValueSelect dispatch={dispatch} rawdata={loopTarget} options={options} constants={constants} onChange={handleChangeLoopTarget} />
+                <ValueSelect disabled={disabled} dispatch={dispatch} rawdata={loopTarget} options={options} constants={constants} onChange={handleChangeLoopTarget} />
               </React.Fragment>}
 
               {isLoopRule && <React.Fragment>
                 <div className={styles['sub-title']} style={{ marginTop: 20, borderColor: 'green' }} >开始前动作</div>
                 <ActionView
+                  disabled={disabled}
                   ruleId={START_ACTIONS}
                   position={START_ACTIONS}
                   dispatch={dispatch}
@@ -193,12 +194,13 @@ const DecisionSetEditor = (props) => {
                   return <React.Fragment key={id}>
                     <div style={isLoopRule ? loopStyle : {}}>
                       {isLoopRule && <div style={{ marginBottom: 16 }}>
-                        名称：<Input value={name} style={{ width: '50%' }} onChange={(e) => handleChangeUnitRuleName(id, e)}></Input>&nbsp;&nbsp;
-                          <Button type="danger" onClick={() => handleDeleteUnitRule(id)} disabled={conditionRules.length === 1} title={conditionRules.length === 1 ? '至少一个条件判断单元' : ""}>删除</Button>
+                        名称：<Input disabled={disabled} value={name} style={{ width: '50%' }} onChange={(e) => handleChangeUnitRuleName(id, e)}></Input>&nbsp;&nbsp;
+                          <Button disabled={disabled} type="danger" onClick={() => handleDeleteUnitRule(id)} disabled={conditionRules.length === 1} title={conditionRules.length === 1 ? '至少一个条件判断单元' : ""}>删除</Button>
                       </div>}
 
                       <div className={styles['sub-title']}>如果</div>
                       <ConditionView
+                        disabled={disabled}
                         ruleId={id}
                         rootCondition={rootCondition}
                         dispatch={dispatch}
@@ -211,6 +213,7 @@ const DecisionSetEditor = (props) => {
                       <ActionView
                         ruleId={id}
                         dispatch={dispatch}
+                        disabled={disabled}
                         position={TRUE_ACTIONS}
                         actions={trueActions}
                         constants={constants}
@@ -222,6 +225,7 @@ const DecisionSetEditor = (props) => {
                       <ActionView
                         ruleId={id}
                         dispatch={dispatch}
+                        disabled={disabled}
                         position={FALSE_ACTIONS}
                         actions={falseActions}
                         constants={constants}
@@ -233,13 +237,14 @@ const DecisionSetEditor = (props) => {
                 })
               }
 
-              {isLoopRule && <Button type="primary" style={{ marginLeft: 8 }} onClick={handleAddUnitRule}>添加条件判断单元</Button>}
+              {!disabled && isLoopRule && <Button type="primary" style={{ marginLeft: 8 }} onClick={handleAddUnitRule}>添加条件判断单元</Button>}
 
               {isLoopRule && <React.Fragment>
                 <div className={styles['sub-title']} style={{ marginTop: 20, borderColor: 'green' }} >结束后动作</div>
                 <ActionView
                   ruleId={END_ACTIONS}
                   position={END_ACTIONS}
+                  disabled={disabled}
                   dispatch={dispatch}
                   actions={endActions}
                   constants={constants}
@@ -254,7 +259,7 @@ const DecisionSetEditor = (props) => {
       </div>
 
       <div className={styles.sider}>
-        <RulePropsView saveLoading={saveLoading} attrs={attrs} dispatch={dispatch} onSubmit={handleSubmit}></RulePropsView>
+        <RulePropsView disabled={disabled} saveLoading={saveLoading} attrs={attrs} dispatch={dispatch} onSubmit={handleSubmit}></RulePropsView>
       </div>
     </div>
   );

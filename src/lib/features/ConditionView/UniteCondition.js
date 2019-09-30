@@ -8,7 +8,7 @@ import styles from './styles/index.module.scss';
 import { AND, OR, NORMAL } from '../../constants/conditionType';
 
 const Unite = props => {
-  const { isRoot = false, isLast, id, parentId, isAndType, onChanageConditionType, onAddCondition, onDelete } = props;
+  const { disabled = false, isRoot = false, isLast, id, parentId, isAndType, onChanageConditionType, onAddCondition, onDelete } = props;
 
   const hasChildren = props.children.length > 0;
 
@@ -39,7 +39,7 @@ const Unite = props => {
       </Menu.Item>
       {!isRoot && <Menu.Divider />}
       {!isRoot && (
-        <Menu.Item>
+        <Menu.Item disabled={disabled}>
           <a style={{ color: 'red' }} onClick={() => onDelete(id, parentId)}>
             删除
           </a>
@@ -53,7 +53,7 @@ const Unite = props => {
       <div className={styles['toolbar__wrapper']}>
         <div className={toolContainerCx}>
           <div className={toolCx}>
-            <Dropdown.Button size="small" overlay={menu}>
+            <Dropdown.Button size="small" overlay={menu} disabled={disabled}>
               {isAndType ? '并且' : '或者'}
             </Dropdown.Button>
           </div>

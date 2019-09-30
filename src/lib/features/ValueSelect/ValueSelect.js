@@ -6,13 +6,14 @@ import InputType from './InputType'
 import { INPUT, CONSTANT, VARIABLE, FUNC } from '../../constants/valueType'
 
 const ValueSelect = (props) => {
-  const { defaultText = '请选择值类型', dispatch, parentId, constants = [], rawOptions = [], options = [], rawdata = {}, onChange } = props;
+  const { disabled = false, defaultText = '请选择值类型', dispatch, parentId, constants = [], rawOptions = [], options = [], rawdata = {}, onChange } = props;
 
   const { id, value, isInputType = false, isFuncType = false } = rawdata;
 
   // 更加不同的值类型显示不同的文本，如果是选择用户输入值时，则会出现一个输入框供用户输入
   const renderDisplayLabel = (rawdata) => {
     if (rawdata.isInputType) {
+      if (disabled) return null;
       return <span style={{ fontWeight: 500 }}>&nbsp;修改值类型</span>
     }
 
@@ -35,7 +36,7 @@ const ValueSelect = (props) => {
 
     return <span>({
       parameters.map(param => {
-        return <span key={param.name}>{param.name}:{param.value && <ValueSelect id={param.value.id} parentId={parentId} rawOptions={rawOptions} options={rawOptions} dispatch={dispatch} constants={constants} rawdata={param.value} onChange={onChange} />};</span>
+        return <span key={param.name}>{param.name}:{param.value && <ValueSelect disabled={disabled} id={param.value.id} parentId={parentId} rawOptions={rawOptions} options={rawOptions} dispatch={dispatch} constants={constants} rawdata={param.value} onChange={onChange} />};</span>
       })
     })</span>
   }
@@ -134,9 +135,9 @@ const ValueSelect = (props) => {
 
   return (
     <React.Fragment>
-      {isInputType && <InputType value={value} onChange={handleInputTypeValueChange} />}
+      {isInputType && <InputType disabled={disabled} value={value} onChange={handleInputTypeValueChange} />}
 
-      <Cascader changeOnSelect={true} options={options} onChange={handleChange}>
+      <Cascader disabled={disabled} changeOnSelect={true} options={options} onChange={handleChange}>
         <span style={{ color: 'blue', fontWeight: 700, cursor: 'pointer', outline: 'none' }}>{rawdata.type ? renderDisplayLabel(rawdata) : defaultText}</span>
       </Cascader>
 
