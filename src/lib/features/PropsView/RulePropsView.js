@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Switch, Button } from 'antd';
 
 import { CONDITION_RULE, LOOP_RULE } from '../../constants/ruleType'
@@ -18,7 +18,22 @@ const formItemLayout = {
 const RulePropsView = props => {
   const { saveLoading = false, attrs = {}, dispatch, onSubmit } = props;
 
+  const [nameFieldError, setNameFieldError] = useState();
+
   const handleFieldValueChange = (fieldName, value) => {
+
+    // 校验规则名称的合法性，回头在优化吧
+    if (fieldName === 'name') {
+      if (value.startsWith("_")) {
+        setNameFieldError("规则名称不能以下划线开头")
+        return
+      } else if (value.length === 0) {
+        setNameFieldError("规则名称不能为空，最长可以输入24个字符")
+      } else {
+        setNameFieldError(null)
+      }
+    }
+
     dispatch({
       type: 'decisionSet/setAttr',
       payload: {
@@ -28,21 +43,32 @@ const RulePropsView = props => {
     })
   }
 
+  const handleSubmit = () => {
+    if (nameFieldError) {
+      return
+    }
+
+    onSubmit && onSubmit()
+  }
 
   return (
     <React.Fragment>
       <Form {...formItemLayout}>
-        <Form.Item label="规则名称"><Input placeholder="请输入规则名称" value={attrs.name} onChange={(e) => handleFieldValueChange('name', e.target.value)} /></Form.Item>
-        <Form.Item label="备注"><Input.TextArea placeholder="请输入备注" value={attrs.remark} onChange={(e) => handleFieldValueChange('remark', e.target.value)} /></Form.Item>
-        <Form.Item label="是否启用"><Switch checked={attrs.enabled} onChange={(e) => handleFieldValueChange('enabled', e)} /></Form.Item>
+        <Form.Item label="规则名称" required hasFeedback validateStatus={nameFieldError ? 'error' : "success"} help={nameFieldError}>
+          <Input maxLength={24} placeholder="请输入规则名称" value={attrs.name} onChange={(e) => handleFieldValueChange('name', e.target.value)} />
+        </Form.Item>
+        <Form.Item label="备注">
+          <Input.TextArea rows={5} maxLength={140} placeholder="请输入备注" value={attrs.remark} onChange={(e) => handleFieldValueChange('remark', e.target.value)} />
+          <p style={{ textAlign: 'right', lineHeight: '24px', margin: 0 }}>{attrs.remark.length}/140</p>
+        </Form.Item>
         <Form.Item label="是否公共规则">
-          <Switch checked={attrs.ruleIsPublic === IS_PUBLIC_RULE} onChange={(e) => handleFieldValueChange('ruleIsPublic', e ? IS_PUBLIC_RULE : NO_PUBLIC_RULE)} />
+          <Switch disabled checked={attrs.ruleIsPublic === IS_PUBLIC_RULE} onChange={(e) => handleFieldValueChange('ruleIsPublic', e ? IS_PUBLIC_RULE : NO_PUBLIC_RULE)} />
         </Form.Item>
         <Form.Item label="是否循环规则">
           <Switch checked={attrs.ruleType === LOOP_RULE} onChange={(e) => handleFieldValueChange('ruleType', e ? LOOP_RULE : CONDITION_RULE)} />
         </Form.Item>
       </Form>
-      <Button type="primary" size="large" style={{ width: '100%' }} onClick={onSubmit} loading={saveLoading}>{saveLoading ? '保存中' : '保存'}</Button>
+      <Button type="primary" size="large" style={{ width: '100%' }} onClick={handleSubmit} loading={saveLoading}>{saveLoading ? '保存中' : '保存'}</Button>
     </React.Fragment>
   );
 };
