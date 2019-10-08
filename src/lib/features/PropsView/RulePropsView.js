@@ -68,10 +68,10 @@ const RulePropsView = props => {
           <p style={{ textAlign: 'right', lineHeight: '24px', margin: 0 }}>{attrs.remark.length}/140</p>
         </Form.Item>
         <Form.Item label="是否公共规则">
-          <Switch disabled checked={attrs.ruleIsPublic === IS_PUBLIC_RULE} onChange={(e) => handleFieldValueChange('ruleIsPublic', e ? IS_PUBLIC_RULE : NO_PUBLIC_RULE)} />
+          <Switch disabled={disabled} checked={attrs.ruleIsPublic == IS_PUBLIC_RULE} onChange={(e) => handleFieldValueChange('ruleIsPublic', e ? IS_PUBLIC_RULE : NO_PUBLIC_RULE)} />
         </Form.Item>
         <Form.Item label="是否循环规则">
-          <Switch disabled={disabled} checked={attrs.ruleType === LOOP_RULE} onChange={(e) => handleFieldValueChange('ruleType', e ? LOOP_RULE : CONDITION_RULE)} />
+          <Switch disabled={disabled} checked={attrs.ruleType == LOOP_RULE} onChange={(e) => handleFieldValueChange('ruleType', e ? LOOP_RULE : CONDITION_RULE)} />
         </Form.Item>
       </Form>
       {!disabled && <Button type="primary" size="large" style={{ width: '100%' }} onClick={handleSubmit} loading={saveLoading}>{saveLoading ? '保存中' : '保存'}</Button>}
