@@ -101,6 +101,7 @@ const DecisionSetEditor = (props) => {
       Modal.warning({
         title: '请输入规则名称',
         content: '规则名称不能为空',
+        okText: '确定',
       });
       return
     }
@@ -111,6 +112,7 @@ const DecisionSetEditor = (props) => {
         Modal.warning({
           title: '请设置循环对象',
           content: '循环对象不能为空',
+          okText: '确定',
         });
         return
       }
@@ -119,6 +121,7 @@ const DecisionSetEditor = (props) => {
         Modal.warning({
           title: '请设置循环对象的值类型',
           content: '循环对象的值类型不能为空',
+          okText: '确定',
         });
         return
       }
@@ -134,6 +137,7 @@ const DecisionSetEditor = (props) => {
         Modal.warning({
           title: '请添加至少一个条件',
           content: '【如果】条件不能为空',
+          okText: '确定',
         });
         return
       }
@@ -142,6 +146,7 @@ const DecisionSetEditor = (props) => {
         Modal.warning({
           title: '请为【那么】【否则】添加至少一个动作',
           content: '【那么】【否则】不能全为空',
+          okText: '确定',
         });
         return
       }
