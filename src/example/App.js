@@ -533,7 +533,7 @@ const initialValue = {
 }
 
 const App = () => {
-  return <RuleEditor initialValue={initialValue} constants={mockConstants} variables={mockVariables} funcs={mockFuncs} onChange={(value) => console.log('value', value)} onSubmit={(v) => console.log('保存', v)} ></RuleEditor>;
+  return <RuleEditor disabled={true} initialValue={initialValue} constants={mockConstants} variables={mockVariables} funcs={mockFuncs} onChange={(value) => console.log('value', value)} onSubmit={(v) => console.log('保存', v)} ></RuleEditor>;
 };
 
 export default App;
