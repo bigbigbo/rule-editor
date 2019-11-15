@@ -139,10 +139,41 @@ const DecisionSetEditor = props => {
         return;
       }
 
+      // 如果所有条件都只是建立了但没有设置任何值类型
+      const isInvalidCondition = rootCondition.subConditions.every(item => !item.expression.left.type);
+      if (isInvalidCondition) {
+        Modal.warning({
+          title: '请为条件添加值类型',
+          content: '条件的值类型不能全为空',
+          okText: '确定'
+        });
+        return;
+      }
+
       if (trueActions.length === 0 && falseActions.length === 0) {
         Modal.warning({
           title: '请为【那么】【否则】添加至少一个动作',
           content: '【那么】【否则】不能全为空',
+          okText: '确定'
+        });
+        return;
+      }
+
+      const isInvalidTrueActions = trueActions.every(item => !item.type);
+      if (trueActions.length > 0 && isInvalidTrueActions) {
+        Modal.warning({
+          title: '请为【那么】添加有效的动作类型',
+          content: '动作类型不能全为空',
+          okText: '确定'
+        });
+        return;
+      }
+
+      const isInvalidFalseActions = falseActions.every(item => !item.type);
+      if (falseActions.length > 0 && isInvalidFalseActions) {
+        Modal.warning({
+          title: '请为【否则】添加有效的动作类型',
+          content: '动作类型不能全为空',
           okText: '确定'
         });
         return;

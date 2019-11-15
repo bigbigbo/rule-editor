@@ -15,16 +15,16 @@ export default {
   input: paths.input,
   external: ['react', 'react-dom', 'antd'],
   output: [
-    // {
-    //   name: 'RuleEditor',
-    //   format: 'es',
-    //   file: 'dist/es/index.js',
-    //   globals: {
-    //     react: 'React',
-    //     "react-dom": "ReactDOM",
-    //     "antd": "antd"
-    //   }
-    // },
+    {
+      name: 'RuleEditor',
+      format: 'es',
+      file: 'dist/es/index.js',
+      globals: {
+        react: 'React',
+        "react-dom": "ReactDOM",
+        "antd": "antd"
+      }
+    },
     {
       name: 'RuleEditor',
       format: 'umd',
@@ -49,11 +49,11 @@ export default {
         autoprefixer()
       ]
     }),
-    uglify({
-      compress: {
-        drop_debugger: true,
-        drop_console: true
-      }
-    })
+    // uglify({
+    //   compress: {
+    //     drop_debugger: true,
+    //     drop_console: true
+    //   }
+    // })
   ]
 }
