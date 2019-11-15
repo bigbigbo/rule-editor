@@ -57,6 +57,13 @@ const RulePropsView = props => {
   };
 
   const handleCancel = () => {
+    if (disabled) {
+      if (typeof onCancel === 'function') {
+        onCancel();
+      }
+      return;
+    }
+
     Modal.confirm({
       title: '您还未保存内容，确定返回吗？',
       onOk() {
