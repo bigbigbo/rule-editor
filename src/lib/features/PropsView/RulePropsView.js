@@ -16,6 +16,9 @@ const formItemLayout = {
   }
 };
 
+const regEn = /[`~!@#$%^&*()+<>?:"{},./\\\-=;'[\]]/im;
+const regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
+
 const RulePropsView = props => {
   const { disabled = false, saveLoading = false, attrs = {}, dispatch, onSubmit, onCancel } = props;
 
@@ -27,6 +30,8 @@ const RulePropsView = props => {
     if (fieldName === 'name') {
       if (value.startsWith('_')) {
         setNameFieldError('规则名称不能以下划线开头');
+      } else if (regEn.test(value) || regCn.test(value)) {
+        setNameFieldError('规则名称不能包含特殊字符');
       } else if (value.length === 0) {
         setNameFieldError('规则名称不能为空，最长可以输入24个字符');
       } else {
