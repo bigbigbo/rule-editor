@@ -1,56 +1,87 @@
 import React from 'react';
 
 import { Cascader } from 'antd';
-import InputType from './InputType'
+import InputType from './InputType';
 
-import { INPUT, CONSTANT, VARIABLE, FUNC } from '../../constants/valueType'
+import { INPUT, CONSTANT, VARIABLE, FUNC } from '../../constants/valueType';
 
-const ValueSelect = (props) => {
-  const { disabled = false, defaultText = '请选择值类型', dispatch, parentId, constants = [], rawOptions = [], options = [], rawdata = {}, onChange } = props;
+const ValueSelect = props => {
+  const {
+    disabled = false,
+    defaultText = '请选择值类型',
+    dispatch,
+    parentId,
+    constants = [],
+    rawOptions = [],
+    options = [],
+    rawdata = {},
+    onChange
+  } = props;
 
   const { id, value, isInputType = false, isFuncType = false } = rawdata;
 
   // 更加不同的值类型显示不同的文本，如果是选择用户输入值时，则会出现一个输入框供用户输入
-  const renderDisplayLabel = (rawdata) => {
+  const renderDisplayLabel = rawdata => {
     if (rawdata.isInputType) {
       if (disabled) return null;
-      return <span style={{ fontWeight: 500 }}>&nbsp;修改值类型</span>
+      return <span style={{ fontWeight: 500 }}>&nbsp;修改值类型</span>;
     }
 
     if (rawdata.isConstantType) {
-      return rawdata.value.dictTypeLabel + (rawdata.value.label ? `.${rawdata.value.label}` : "")
+      return rawdata.value.dictTypeLabel + (rawdata.value.label ? `.${rawdata.value.label}` : '');
     }
 
     if (rawdata.isVariableType) {
-      return rawdata.value.groupLabel + (rawdata.value.propLabel ? `.${rawdata.value.propLabel}` : "")
+      return rawdata.value.groupLabel + (rawdata.value.propLabel ? `.${rawdata.value.propLabel}` : '');
     }
 
     if (rawdata.isFuncType) {
-      return rawdata.value.methodLabel
+      return rawdata.value.methodLabel;
     }
-  }
+  };
 
   // 如果是选择函数类型，则应该还要渲染对应的参数
-  const renderFuncParameters = (rawdata) => {
-    const { parameters } = rawdata.value || {}
+  const renderFuncParameters = rawdata => {
+    const { parameters } = rawdata.value || {};
 
-    return <span>({
-      parameters.map(param => {
-        return <span key={param.name}>{param.name}:{param.value && <ValueSelect disabled={disabled} id={param.value.id} parentId={parentId} rawOptions={rawOptions} options={rawOptions} dispatch={dispatch} constants={constants} rawdata={param.value} onChange={onChange} />};</span>
-      })
-    })</span>
-  }
+    return (
+      <span>
+        (
+        {parameters.map(param => {
+          return (
+            <span key={param.name}>
+              {param.name}:
+              {param.value && (
+                <ValueSelect
+                  disabled={disabled}
+                  id={param.value.id}
+                  parentId={parentId}
+                  rawOptions={rawOptions}
+                  options={rawOptions}
+                  dispatch={dispatch}
+                  constants={constants}
+                  rawdata={param.value}
+                  onChange={onChange}
+                />
+              )}
+              ;
+            </span>
+          );
+        })}
+        )
+      </span>
+    );
+  };
 
   const handleChange = (value, selectedOptions) => {
-
     const [valueType] = value;
     let standardValue;
 
     // 当直选了值类型而没有选择具体值的时候，不触发 onChange
-    if (value.length === 1 && valueType !== INPUT) return
+    if (value.length === 1 && valueType !== INPUT) return;
 
     if (valueType === INPUT) {
-      standardValue = ""
+      standardValue = '';
     }
 
     if (valueType === CONSTANT) {
@@ -63,9 +94,9 @@ const ValueSelect = (props) => {
           dicts,
           dictType,
           dictTypeLabel,
-          code: "",
-          label: ""
-        }
+          code: '',
+          label: ''
+        };
       } else {
         standardValue = {
           dicts,
@@ -73,7 +104,7 @@ const ValueSelect = (props) => {
           dictTypeLabel,
           code,
           label
-        }
+        };
       }
     }
 
@@ -86,17 +117,20 @@ const ValueSelect = (props) => {
           dicts,
           groupCode: [value[value.length - 1]],
           groupLabel: selectedOptions[selectedOptions.length - 1].label,
-          propCode: "",
-          propLabel: ""
-        }
+          propCode: '',
+          propLabel: ''
+        };
       } else {
         standardValue = {
           dicts,
           groupCode: value.slice(1, value.length - 1),
-          groupLabel: selectedOptions.slice(1, value.length - 1).map(i => i.label).join('.'),
+          groupLabel: selectedOptions
+            .slice(1, value.length - 1)
+            .map(i => i.label)
+            .join('.'),
           propCode: value[value.length - 1],
           propLabel: selectedOptions[selectedOptions.length - 1].label
-        }
+        };
       }
     }
 
@@ -105,44 +139,46 @@ const ValueSelect = (props) => {
       if (value.length === 2) return;
 
       const [, actionName, methodName] = value;
-      const { label, parameters } = selectedOptions[selectedOptions.length - 1]
+      const { label, parameters } = selectedOptions[selectedOptions.length - 1];
 
       standardValue = {
         actionName,
         methodName,
         methodLabel: label,
         parameters
-      }
-
+      };
     }
 
-    onChange && onChange({
-      parentId,
-      valueId: id,
-      type: valueType,
-      value: standardValue,
-    })
-  }
+    onChange &&
+      onChange({
+        parentId,
+        valueId: id,
+        type: valueType,
+        value: standardValue
+      });
+  };
 
   const handleInputTypeValueChange = ({ target: { value } }) => {
-    onChange && onChange({
-      parentId,
-      valueId: id,
-      type: INPUT,
-      value,
-    })
-  }
+    onChange &&
+      onChange({
+        parentId,
+        valueId: id,
+        type: INPUT,
+        value
+      });
+  };
 
   return (
     <React.Fragment>
       {isInputType && <InputType disabled={disabled} value={value} onChange={handleInputTypeValueChange} />}
 
       <Cascader disabled={disabled} changeOnSelect={true} options={options} onChange={handleChange}>
-        <span style={{ color: 'blue', fontWeight: 700, cursor: 'pointer', outline: 'none' }}>{rawdata.type ? renderDisplayLabel(rawdata) : defaultText}</span>
+        <span style={{ color: 'blue', fontWeight: 700, cursor: disabled ? '' : 'pointer', outline: 'none' }}>
+          {rawdata.type ? renderDisplayLabel(rawdata) : defaultText}
+        </span>
       </Cascader>
 
       {isFuncType && renderFuncParameters(rawdata)}
-
     </React.Fragment>
   );
 };

@@ -3,24 +3,24 @@
 import React, { useMemo } from 'react';
 
 import { Popconfirm, Dropdown, Menu } from 'antd';
-import ValueSelect from '../ValueSelect'
+import ValueSelect from '../ValueSelect';
 
 import styles from './styles/index.module.scss';
 
-import { getNode } from '../../utils/decisionSet'
-import { INPUT, VARIABLE, CONSTANT, FUNC, OPERATE, OPERATE_CHATORATOR } from '../../constants/valueType'
+import { getNode } from '../../utils/decisionSet';
+import { INPUT, VARIABLE, CONSTANT, FUNC, OPERATE, OPERATE_CHATORATOR } from '../../constants/valueType';
 
-const LEFT = 'left'
-const RIGHT = 'right'
+const LEFT = 'left';
+const RIGHT = 'right';
 
 const Condition = props => {
   const { disabled = false, id, parentId, onDelete, dispatch, constants, variables, funcs, rootCondition } = props;
 
   const currValue = useMemo(() => {
-    return getNode([rootCondition], id)
-  }, [id, rootCondition])
+    return getNode([rootCondition], id);
+  }, [id, rootCondition]);
 
-  const { expression = {} } = currValue || {}
+  const { expression = {} } = currValue || {};
   const { left = {}, operator, right = {} } = expression;
 
   const options = [
@@ -43,9 +43,12 @@ const Condition = props => {
       value: FUNC,
       children: funcs
     }
-  ]
+  ];
 
-  const rightOptions = (left.type === VARIABLE && left.value && left.value.dicts) ? [{ label: '选择常量', value: CONSTANT, children: [left.value.dicts] }] : options
+  const rightOptions =
+    left.type === VARIABLE && left.value && left.value.dicts
+      ? [{ label: '选择常量', value: CONSTANT, children: [left.value.dicts] }]
+      : options;
 
   const handleChangeOperator = ({ label, charator }) => {
     dispatch({
@@ -55,7 +58,7 @@ const Condition = props => {
         label,
         charator
       }
-    })
+    });
 
     if (!right.id) {
       // 添加一个值类型选择
@@ -64,22 +67,26 @@ const Condition = props => {
         payload: {
           id,
           parentId: null,
-          position: RIGHT,
+          position: RIGHT
         }
-      })
+      });
     }
-  }
+  };
 
   // 操作符
-  const operatorMenu = <Menu>
-    {
-      OPERATE.map(operator => {
-        return <Menu.Item key={operator.charator}>
-          <a onClick={() => handleChangeOperator({ label: operator.label, charator: operator.charator })}>{operator.label}</a>
-        </Menu.Item>
-      })
-    }
-  </Menu>
+  const operatorMenu = (
+    <Menu>
+      {OPERATE.map(operator => {
+        return (
+          <Menu.Item key={operator.charator}>
+            <a onClick={() => handleChangeOperator({ label: operator.label, charator: operator.charator })}>
+              {operator.label}
+            </a>
+          </Menu.Item>
+        );
+      })}
+    </Menu>
+  );
 
   // 值类型的值改变
   const handleExpressionChange = ({ parentId, valueId, type, value }, position) => {
@@ -90,40 +97,68 @@ const Condition = props => {
         valueId,
         value,
         position: position,
-        valueType: type,
+        valueType: type
       }
-    })
-      .then(() => {
-        // 如果是函数，还得为参数添加值类型
-        if (type === FUNC) {
-          dispatch({
-            type: 'decisionSet/addValueTypeToCondition',
-            payload: {
-              id: parentId,
-              parentId: valueId,
-              position
-            }
-          })
-        }
-      })
-  }
+    }).then(() => {
+      // 如果是函数，还得为参数添加值类型
+      if (type === FUNC) {
+        dispatch({
+          type: 'decisionSet/addValueTypeToCondition',
+          payload: {
+            id: parentId,
+            parentId: valueId,
+            position
+          }
+        });
+      }
+    });
+  };
 
   return (
     <div className={styles.display}>
+      {left.id && (
+        <ValueSelect
+          disabled={disabled}
+          parentId={id}
+          dispatch={dispatch}
+          rawOptions={options}
+          rawdata={left}
+          options={options}
+          constants={constants}
+          onChange={value => handleExpressionChange(value, LEFT)}
+        />
+      )}
 
-      {left.id && <ValueSelect disabled={disabled} parentId={id} dispatch={dispatch} rawOptions={options} rawdata={left} options={options} constants={constants} onChange={(value) => handleExpressionChange(value, LEFT)} />}
+      {left.type && (
+        <Dropdown disabled={disabled} overlay={operatorMenu} trigger={['click']}>
+          <span style={{ color: 'red', fontWeight: 700, cursor: disabled ? '' : 'pointer', outline: 'none' }}>
+            &nbsp;{operator ? operator.label : '请选择操作符'}&nbsp;
+          </span>
+        </Dropdown>
+      )}
 
-      {left.type && <Dropdown disabled={disabled} overlay={operatorMenu} trigger={['click']}>
-        <span style={{ color: 'red', fontWeight: 700, cursor: 'pointer', outline: 'none' }}>&nbsp;{operator ? operator.label : '请选择操作符'}&nbsp;</span>
-      </Dropdown>}
+      {right.id && (
+        <ValueSelect
+          disabled={disabled}
+          parentId={id}
+          rawOptions={options}
+          dispatch={dispatch}
+          rawdata={right}
+          options={rightOptions}
+          constants={constants}
+          onChange={value => handleExpressionChange(value, RIGHT)}
+        />
+      )}
 
-      {right.id && <ValueSelect disabled={disabled} parentId={id} rawOptions={options} dispatch={dispatch} rawdata={right} options={rightOptions} constants={constants} onChange={(value) => handleExpressionChange(value, RIGHT)} />}
+      {operator && [OPERATE_CHATORATOR.in, OPERATE_CHATORATOR.NotIn].includes(operator.charator) && (
+        <span style={{ color: 'red', fontWeight: 700 }}>&nbsp;之中</span>
+      )}
 
-      {operator && [OPERATE_CHATORATOR.in, OPERATE_CHATORATOR.NotIn].includes(operator.charator) && <span style={{ color: 'red', fontWeight: 700 }}>&nbsp;之中</span>}
-
-      {!disabled && <Popconfirm title="确定删除当前条件？" onConfirm={() => onDelete(id, parentId)}>
-        <span style={{ color: '#1890ff', cursor: 'pointer' }}>&nbsp;删&nbsp;除</span>
-      </Popconfirm>}
+      {!disabled && (
+        <Popconfirm title="确定删除当前条件？" onConfirm={() => onDelete(id, parentId)}>
+          <span style={{ color: '#1890ff', cursor: 'pointer' }}>&nbsp;删&nbsp;除</span>
+        </Popconfirm>
+      )}
     </div>
   );
 };
