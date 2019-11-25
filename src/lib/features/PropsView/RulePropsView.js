@@ -102,13 +102,15 @@ const RulePropsView = props => {
             disabled={disabled}
             rows={5}
             maxLength={140}
-            placeholder="请输入备注"
+            placeholder={disabled ? '' : '请输入备注'}
             value={attrs.remark}
             onChange={e => handleFieldValueChange('remark', e.target.value)}
           />
-          <p style={{ textAlign: 'right', lineHeight: '24px', margin: 0 }}>
-            还能输入<span style={{ color: 'red' }}>{140 - attrs.remark.length}</span>个字
-          </p>
+          {!disabled && (
+            <p style={{ textAlign: 'right', lineHeight: '24px', margin: 0 }}>
+              还能输入<span style={{ color: 'red' }}>{140 - attrs.remark.length}</span>个字
+            </p>
+          )}
         </Form.Item>
         <Form.Item label="是否公共规则">
           <Switch
