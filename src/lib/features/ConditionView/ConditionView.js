@@ -1,9 +1,9 @@
 import React from 'react';
 import { Modal } from 'antd';
-import UniteCondition from './UniteCondition'
-import Condition from './Condition'
+import UniteCondition from './UniteCondition';
+import Condition from './Condition';
 
-const ConditionView = (props) => {
+const ConditionView = props => {
   const { disabled = false, rootCondition = {}, dispatch, constants = [], variables = [], funcs = [] } = props;
 
   const handleChanageConditionType = (id, type) => {
@@ -57,18 +57,20 @@ const ConditionView = (props) => {
       const { id, isAndType, isNormalType, subConditions = [] } = condition;
 
       if (isNormalType) {
-        return <Condition
-          key={id}
-          id={id}
-          disabled={disabled}
-          parentId={parentId}
-          rootCondition={rootCondition}
-          constants={constants}
-          variables={variables}
-          funcs={funcs}
-          dispatch={dispatch}
-          onDelete={handleonDelete}
-        />;
+        return (
+          <Condition
+            key={id}
+            id={id}
+            disabled={disabled}
+            parentId={parentId}
+            rootCondition={rootCondition}
+            constants={constants}
+            variables={variables}
+            funcs={funcs}
+            dispatch={dispatch}
+            onDelete={handleonDelete}
+          />
+        );
       }
 
       return (

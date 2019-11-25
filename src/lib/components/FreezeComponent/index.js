@@ -1,3 +1,3 @@
-import FreezeComponent from './FreezeComponent'
+import FreezeComponent from './FreezeComponent';
 
-export default FreezeComponent
+export default FreezeComponent;

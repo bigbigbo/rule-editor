@@ -19,12 +19,12 @@ export default {
           decisionSet: [
             {
               id: 'file_0',
-              name: 'demo.rx.xml',
+              name: 'demo.rx.xml'
             },
             {
               id: 'file_1',
-              name: 'test.rx.xml',
-            },
+              name: 'test.rx.xml'
+            }
           ]
         }
       }
@@ -32,4 +32,4 @@ export default {
   },
   effects: {},
   reducers: {}
-}
+};

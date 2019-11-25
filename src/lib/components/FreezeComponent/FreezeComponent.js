@@ -1,14 +1,12 @@
 import { Component } from 'react';
 
 class FreezeComponent extends Component {
-
   shouldComponentUpdate(nextProps, nextState) {
-    return !nextProps.freeze
+    return !nextProps.freeze;
   }
-  
-  
+
   render() {
-    return this.props.children
+    return this.props.children;
   }
 }
 

@@ -1,3 +1,3 @@
-export const VARIABLE_ASSIGN = 'variableAssign'
+export const VARIABLE_ASSIGN = 'variableAssign';
 
-export const EXECUTE_METHOD = 'executeMethod'
+export const EXECUTE_METHOD = 'executeMethod';

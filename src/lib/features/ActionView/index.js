@@ -1,3 +1,3 @@
-import ActionView from './ActionView'
+import ActionView from './ActionView';
 
-export default ActionView
+export default ActionView;

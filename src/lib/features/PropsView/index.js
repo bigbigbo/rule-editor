@@ -1,3 +1,3 @@
-import PropsView from './PropsView'
+import PropsView from './PropsView';
 
-export default PropsView
+export default PropsView;

@@ -11,18 +11,18 @@ export function getNode(data, id) {
     });
   }
 
-  core(data, id)
+  core(data, id);
 
   return result;
 }
 
 // 不返回一个新的数组
 function map(data, fn) {
-  let result = []
+  let result = [];
 
   data.forEach(item => {
-    result.push(fn(item))
-  })
+    result.push(fn(item));
+  });
 
   return result;
 }
@@ -36,13 +36,13 @@ export function getValueType(data, id) {
       if (item.id === id) {
         result = item;
       } else if (item.value && Array.isArray(item.value.parameters) && item.value.parameters.length > 0) {
-        core(map(item.value.parameters, (i) => i.value), id)
+        core(map(item.value.parameters, i => i.value), id);
         // core(item.value.parameters.map(i => i.value), id)
       }
-    })
+    });
   }
 
-  core(data, id)
+  core(data, id);
 
-  return result
+  return result;
 }

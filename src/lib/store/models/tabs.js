@@ -2,12 +2,14 @@ import produce from 'immer';
 export default {
   namespace: 'tabs',
   state: {
-    activeKey: "file_0",
-    tabs: [{
-      editorType: "decisionSet",
-      id: "file_0",
-      title: "demo.rx.xml"
-    }]
+    activeKey: 'file_0',
+    tabs: [
+      {
+        editorType: 'decisionSet',
+        id: 'file_0',
+        title: 'demo.rx.xml'
+      }
+    ]
   },
   effects: {},
   reducers: {

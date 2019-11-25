@@ -1,38 +1,38 @@
 export const INPUT = 'input';
 
-export const VARIABLE = 'variable'
+export const VARIABLE = 'variable';
 
-export const CONSTANT = 'constant'
+export const CONSTANT = 'constant';
 
-export const FUNC = 'func'
+export const FUNC = 'func';
 
 export const OPERATE_CHATORATOR = {
   '==': '==',
-  'EqualsIgnoreCase': 'EqualsIgnoreCase',
+  EqualsIgnoreCase: 'EqualsIgnoreCase',
   '!=': '!=',
-  'NotEqualsIgnoreCase': 'NotEqualsIgnoreCase',
+  NotEqualsIgnoreCase: 'NotEqualsIgnoreCase',
   '<': '<',
   '<=': '<=',
   '>': '>',
   '>=': '>=',
-  'in': 'in',
-  'NotIn': 'NotIn',
-  'StartWith': 'StartWith',
-  'NotStartWith': 'NotStartWith',
-  'EndWith': 'EndWith',
-  'NotEndWith': 'NotEndWith',
-  'Null': 'Null',
-  'NotNull': 'NotNull',
-  'Match': 'Match',
-  'NotMatch': 'NotMatch',
-  'Contain': 'Contain',
-  'NotContain': 'NotContain',
-}
+  in: 'in',
+  NotIn: 'NotIn',
+  StartWith: 'StartWith',
+  NotStartWith: 'NotStartWith',
+  EndWith: 'EndWith',
+  NotEndWith: 'NotEndWith',
+  Null: 'Null',
+  NotNull: 'NotNull',
+  Match: 'Match',
+  NotMatch: 'NotMatch',
+  Contain: 'Contain',
+  NotContain: 'NotContain'
+};
 
 export const OPERATE = [
   {
     label: '等于',
-    charator: OPERATE_CHATORATOR["=="]
+    charator: OPERATE_CHATORATOR['==']
   },
   {
     label: '等于（不区分大小写）',
@@ -40,7 +40,7 @@ export const OPERATE = [
   },
   {
     label: '不等于',
-    charator: OPERATE_CHATORATOR["!="]
+    charator: OPERATE_CHATORATOR['!=']
   },
   {
     label: '不等于（不区分大小写）',
@@ -109,5 +109,5 @@ export const OPERATE = [
   {
     label: '不包含',
     charator: OPERATE_CHATORATOR['NotContain']
-  },
-]
+  }
+];

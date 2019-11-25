@@ -1,3 +1,3 @@
-import ValueSelect from './ValueSelect'
+import ValueSelect from './ValueSelect';
 
-export default ValueSelect
+export default ValueSelect;

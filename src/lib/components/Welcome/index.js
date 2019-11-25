@@ -1,3 +1,3 @@
-import Welcomme from './Welcomme'
+import Welcomme from './Welcomme';
 
-export default Welcomme
+export default Welcomme;

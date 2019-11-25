@@ -8,7 +8,17 @@ import styles from './styles/index.module.scss';
 import { AND, OR, NORMAL } from '../../constants/conditionType';
 
 const Unite = props => {
-  const { disabled = false, isRoot = false, isLast, id, parentId, isAndType, onChanageConditionType, onAddCondition, onDelete } = props;
+  const {
+    disabled = false,
+    isRoot = false,
+    isLast,
+    id,
+    parentId,
+    isAndType,
+    onChanageConditionType,
+    onAddCondition,
+    onDelete
+  } = props;
 
   const hasChildren = props.children.length > 0;
 

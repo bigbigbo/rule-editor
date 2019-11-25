@@ -1,3 +1,3 @@
-import ExplorerView from './ExplorerView'
+import ExplorerView from './ExplorerView';
 
-export default ExplorerView
+export default ExplorerView;

@@ -1,3 +1,3 @@
-import ConditionView from './ConditionView'
+import ConditionView from './ConditionView';
 
-export default ConditionView
+export default ConditionView;

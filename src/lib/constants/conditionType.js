@@ -1,5 +1,5 @@
-export const AND = 'and'
+export const AND = 'and';
 
-export const OR = 'or'
+export const OR = 'or';
 
-export const NORMAL = 'normal'
+export const NORMAL = 'normal';
