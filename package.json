@@ -12,7 +12,8 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
     "lint": "eslint --fix --ext .js src",
-    "compile": "rimraf dist && cross-env BABEL_ENV=production rollup -c config/rollup.config.js"
+    "compile": "rimraf dist && cross-env BABEL_ENV=production rollup -c config/rollup.config.js",
+    "release": "npm run compile && npm publish -registry http://192.168.203.60:9999/repository/npm-internal/"
   },
   "eslintConfig": {
     "extends": "react-app"

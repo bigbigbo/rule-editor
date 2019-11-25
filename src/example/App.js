@@ -509,7 +509,7 @@ const initialValue = {
 const App = () => {
   return (
     <RuleEditor
-      disabled={false}
+      disabled={true}
       initialValue={initialValue}
       constants={mockConstants}
       variables={mockVariables}
