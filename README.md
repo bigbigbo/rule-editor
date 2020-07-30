@@ -14,6 +14,8 @@
 - [ ] 保存校验
 
 ## Example
+![demo](./screenshots/demo.gif)
+
 ```sh
 npm install # 安装
 
